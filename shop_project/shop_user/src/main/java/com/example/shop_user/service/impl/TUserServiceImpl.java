@@ -8,6 +8,7 @@ import com.example.shop_common.common.redis.annotation.RedisCacheDelete;
 import com.example.shop_common.common.redis.annotation.RedisCacheGet;
 import com.example.shop_common.common.redis.annotation.RedisCachePut;
 import com.example.shop_common.utils.DataUtil;
+import com.example.shop_common.utils.MD5Utils;
 import com.example.shop_user.dto.RegisterUserDto;
 import com.example.shop_user.entity.TUser;
 import com.example.shop_user.mapper.TUserMapper;
@@ -23,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -86,17 +88,25 @@ public class TUserServiceImpl extends ServiceImpl<TUserMapper, TUser> implements
 
     @Override
     public void register(RegisterUserDto tUser) {
-        //1：查询用户是否已经存在
-        //2：用户存在抛出异常，不存在则进行用户密码
         if (DataUtil.isNull(tUser)){
             throw new CoreException("用户为空");
         }
+        if (!tUser.getPassword().equals(tUser.getConfirmPassword())){
+            throw new CoreException("两次输入密码不一致");
+        }
+        //1：查询用户是否已经存在
         TUser dbUser = mapper.selectOne(new QueryWrapper<TUser>().eq("username", tUser.getUsername()));
         if (DataUtil.notNull(dbUser)){
             throw new CoreException("用户名已存在");
         }
-
-
+        TUser newUser = DataUtil.cloneBean(tUser,TUser.class);
+        //用户密码生成
+        try {
+            newUser.setPassword(MD5Utils.getMD5Str(newUser.getPassword()));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        mapper.insert(newUser);
     }
 
 

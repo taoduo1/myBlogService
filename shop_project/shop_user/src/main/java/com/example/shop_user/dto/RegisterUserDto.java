@@ -23,9 +23,6 @@ public class RegisterUserDto {
     @ApiModelProperty(value = "用户确认密码")
     private String confirmPassword;
 
-    @ApiModelProperty(value = "电子邮箱")
-    private String email;
-
     @ApiModelProperty(value = "手机号")
     @NotNull(message = "手机号不能为空")
     private String phone;
