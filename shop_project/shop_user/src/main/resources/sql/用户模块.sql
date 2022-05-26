@@ -1,7 +1,7 @@
 -- 租户表、用户表、角色表、权限表、角色权限表、用户角色表
-CREATE TABLE `t_user`
+CREATE TABLE `user`
 (
-    `id`              int(11)     NOT NULL AUTO_INCREMENT,
+    `id`              int(11)  NOT NULL AUTO_INCREMENT,
     `username`        varchar(50) NOT NULL DEFAULT '' COMMENT '用户名',
     `password`        varchar(64)          DEFAULT NULL COMMENT '密码',
     `email`           varchar(255)         DEFAULT NULL COMMENT '电子邮箱',
@@ -19,12 +19,30 @@ CREATE TABLE `t_user`
     `city`            varchar(50)          DEFAULT NULL COMMENT '城市',
     `level`           int(11)              DEFAULT NULL COMMENT '用户级别',
     `login_count`     int(11)              DEFAULT NULL COMMENT '登录次数',
+
+    `tenant_id`       int(11)           DEFAULT NULL COMMENT '登录次数',
     `remark`          varchar(50)          DEFAULT NULL COMMENT '备注',
     `is_deleted`      int(3)               DEFAULT NULL COMMENT '是否删除',
     `create_by`       int(11)     NOT NULL COMMENT '创建人',
     `create_time`     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_by`       int(11)     NOT NULL COMMENT '更新人',
     `update_time`     timestamp            DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+
+-- 租户表
+CREATE TABLE `tenant`
+(
+    `id`          int(11)  NOT NULL AUTO_INCREMENT,
+    `tenant_name` varchar(50) NOT NULL DEFAULT '' COMMENT '用户名',
+    `remark`      varchar(50)          DEFAULT NULL COMMENT '备注',
+    `is_deleted`  int(3)               DEFAULT NULL COMMENT '是否删除',
+    `create_by`   int(11)     NOT NULL COMMENT '创建人',
+    `create_time` timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_by`   int(11)     NOT NULL COMMENT '更新人',
+    `update_time` timestamp            DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;

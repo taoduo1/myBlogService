@@ -37,5 +37,7 @@ public class BaseEntity implements Serializable {
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
+    @ApiModelProperty(value = "租户id")
+    private String tenantId;
 
 }

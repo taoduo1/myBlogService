@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.example.shop_common.entity.BaseEntity;
 
 import java.util.Scanner;
 
@@ -74,7 +75,8 @@ public class GeneratorCodeConfig {
         strategy.setSuperEntityClass("com.example.shop_common.entity");
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
-
+        strategy.setSuperEntityClass(BaseEntity.class);
+        strategy.setSuperMapperClass("com.example.shop_common.common.mybatis.ExtBaseMapper");
         strategy.setEntityLombokModel(true);
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
