@@ -9,6 +9,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 基础类
+ */
 @Data
 public class BaseEntity implements Serializable {
 

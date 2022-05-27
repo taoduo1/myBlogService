@@ -1,14 +1,14 @@
 package com.example.shop_common.common.service;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 基础的crud接口.
- *
- * @author TIM(JT)
- * @param <T> the generic type
- * @date 2017-08-02 18
  */
 public interface CrudService<T> {
 
@@ -19,11 +19,9 @@ public interface CrudService<T> {
      * @return the t
      */
 	T get(Serializable id);
-	
+
 	/**
 	 * 批量获取bean
-	 * @param idList
-	 * @return
 	 */
 	List<T> getList(List<Serializable> idList);
 	
@@ -37,19 +35,8 @@ public interface CrudService<T> {
 	
 	/**
 	 * 批量更新
-	 * @param entityList
 	 */
 	void batchInsert(List<T> entityList);
-
-    /**
-     * 更新.
-     *
-     * @param entity the entity
-     * @param includeColumns the include columns
-     * @return the int
-     */
-    //  int updateSelective(T entity);
-    int update(T entity, String... includeColumns);
 
 	/**
      * 删除.
@@ -78,40 +65,37 @@ public interface CrudService<T> {
     /**
      * Find the one by condition.
      *
-     * @param objects the objects
+     * @param queryWrapper the queryWrapper
      * @return the t
      */
-    T findOneByCondition(Object... objects);
+    T findOneByCondition(Wrapper<T> queryWrapper);
 
     /**
      * Find the by condition.
      *
-     * @param objects the objects
+     * @param queryWrapper the queryWrapper
      * @return the list
      */
-    List<T> findByCondition(Object... objects);
+    List<T> findByCondition(Wrapper<T> queryWrapper);
 
     /**
      * Delete by condition.
      *
-     * @param objects the objects
+     * @param queryWrapper the objects
      * @return the int
      */
-    int deleteByCondition(Object... objects);
+    int deleteByCondition(Wrapper<T> queryWrapper);
 
     /**
      * Count by condition.
      *
-     * @param objects the objects
+     * @param queryWrapper the queryWrapper
      * @return the long
      */
-    Long countByCondition(Object... objects);
+	Integer countByCondition(Wrapper<T> queryWrapper);
 
-    /**
-     * Count by condition.
-    *
-    * @param objects the objects
-    * @return the long
-    */
-    boolean existByCondition(Object... objects);
+
+	IPage<T> selectPage(IPage<T> page,Wrapper<T> wrapper);
+
+	IPage<Map<String, Object>> selectMapsPage(IPage<T> page, Wrapper<T> wrapper);
 }
