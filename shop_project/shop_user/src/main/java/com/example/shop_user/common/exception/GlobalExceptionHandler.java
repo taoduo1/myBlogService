@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author duo.tao
+ * @Description: 全局异常处理
+ * @date 2022-06-13 23:14
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 

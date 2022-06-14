@@ -10,7 +10,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 基础类
+ * @author duo.tao
+ * @Description: 基础实体类
+ * @date 2022-06-13 23:14
  */
 @Data
 public class BaseEntity implements Serializable {

@@ -13,12 +13,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * 日期工具函数。
- * 
- * TODO 该工具类需要CodeReview，以处理float的计算偏差，对函数参数属性的擅改。
- * TODO 使用java8 LocalDate、LocalDateTime等相关时间类库重构.
- *
- * @author heng.yao
+ * @author duo.tao
+ * @Description: 时间处理工具类
+ * @date 2022-06-13 23:14
  */
 public class DateUtil {
 

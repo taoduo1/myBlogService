@@ -5,6 +5,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * @author duo.tao
+ * @Description: 自定义全局异常类
+ * @date 2022-06-13 23:14
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "自定义全局异常类")

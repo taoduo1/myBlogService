@@ -20,11 +20,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * 该类提供对集合类的高效操作.
- *
- * @author Czp
+ * @author duo.tao
+ * @Description: 该类提供对集合类的高效操作
+ * @date 2022-06-13 23:14
  */
-
 public class CollectionUtils {
 
     private static final int SUB_SIZE_DEFAULT = 15;

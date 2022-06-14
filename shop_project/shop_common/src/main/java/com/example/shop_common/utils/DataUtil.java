@@ -43,10 +43,9 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 
 /**
- * @Company 上海歆成
- * @Description:
- * @Author staton
- * @Date 2020/5/26 10:08
+ * @author duo.tao
+ * @Description: 数据处理工具类
+ * @date 2022-06-13 23:14
  */
 public class DataUtil {
 
@@ -1099,7 +1098,7 @@ public class DataUtil {
 
     public static Double StringToDouble(String s) {
         try {
-            return DataUtil.notNullOrEmpty(s) ? Double.valueOf(s) : 0;
+            return DataUtil.notNullOrEmpty(s) ? Double.parseDouble(s) : 0;
         } catch (NumberFormatException e) {
             throw new CoreException("不合法的数值：" + s);
         }

@@ -21,11 +21,11 @@ import java.util.List;
 
 import static springfox.documentation.builders.PathSelectors.ant;
 
+
 /**
- * swagger配置
- *
- * @author:duo.tao
- * @date:2022/02/25 14:12
+ * @author duo.tao
+ * @Description: swagger配置类
+ * @date 2022-06-13 23:14
  */
 @Configuration
 @EnableSwagger2

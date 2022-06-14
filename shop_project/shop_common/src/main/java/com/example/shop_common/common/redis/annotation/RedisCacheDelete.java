@@ -8,9 +8,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 缓存注解。.
- *
- * @author heng.yao
+ * @author duo.tao
+ * @Description: 缓存注解。.
+ * @date 2022-06-13 23:14
  */
 @Documented
 @Inherited

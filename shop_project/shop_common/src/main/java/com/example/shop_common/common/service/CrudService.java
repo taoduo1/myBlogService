@@ -1,14 +1,18 @@
 package com.example.shop_common.common.service;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+
 /**
- * 基础的crud接口.
+ * @author duo.tao
+ * @Description: 基础的crud接口
+ * @date 2022-06-13 23:14
  */
 public interface CrudService<T> {
 
@@ -32,6 +36,14 @@ public interface CrudService<T> {
      * @return the int
      */
 	int insert(T entity);
+
+	/**
+	 * 更新.
+	 *
+	 * @param entity the entity
+	 * @return the int
+	 */
+	int save(T entity);
 	
 	/**
 	 * 批量更新
@@ -68,7 +80,7 @@ public interface CrudService<T> {
      * @param queryWrapper the queryWrapper
      * @return the t
      */
-    T findOneByCondition(Wrapper<T> queryWrapper);
+    T findOneByCondition(QueryWrapper<T> queryWrapper);
 
     /**
      * Find the by condition.
@@ -77,6 +89,14 @@ public interface CrudService<T> {
      * @return the list
      */
     List<T> findByCondition(Wrapper<T> queryWrapper);
+
+	/**
+	 * Find Count by condition.
+	 *
+	 * @param queryWrapper the queryWrapper
+	 * @return the list
+	 */
+	int selectCount(Wrapper<T> queryWrapper);
 
     /**
      * Delete by condition.

@@ -19,14 +19,17 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.function.Supplier;
 
+
 /**
- * The Class JSONUtil.
+ * @author duo.tao
+ * @Description: json处理工具类
+ * @date 2022-06-13 23:14
  */
 public final class JSONUtils {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(JSONUtils.class);
 
-	private static ObjectMapper mapper;
+	private static final ObjectMapper mapper;
 
 	static {
 		mapper = new ObjectMapper();

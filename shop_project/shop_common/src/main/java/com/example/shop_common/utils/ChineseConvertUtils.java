@@ -1,15 +1,12 @@
 package com.example.shop_common.utils;
 
-/**
- * Created by ajin on 2019-04-12.
- */
-
 import java.util.HashMap;
 
+
 /**
- * 数字金额转换成中文大写金额
- *
- * @author ftpeng
+ * @author duo.tao
+ * @Description: 数字金额转换成中文大写金额
+ * @date 2022-06-13 23:14
  */
 public class ChineseConvertUtils {
 

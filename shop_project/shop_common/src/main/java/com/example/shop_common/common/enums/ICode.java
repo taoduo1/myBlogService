@@ -5,11 +5,10 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * 枚举 接口
- *
- * @author TIM(JT)
- * @date 2017-05-22 18
- **/
+ * @author duo.tao
+ * @Description: 枚举 接口
+ * @date 2022-06-13 23:14
+ */
 public interface ICode extends IToMap {
 
     String getCode();

@@ -6,8 +6,11 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.List;
 
+
 /**
- *返回结果类统一封装
+ * @author duo.tao
+ * @Description: 返回结果类统一封装
+ * @date 2022-06-13 23:14
  */
 @Data
 public class ActionResult<T> implements Serializable {

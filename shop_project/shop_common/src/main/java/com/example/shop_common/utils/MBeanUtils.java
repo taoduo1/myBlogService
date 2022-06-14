@@ -5,6 +5,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author duo.tao
+ * @Description: 对象处理工具类
+ * @date 2022-06-13 23:14
+ */
 @Component
 public class MBeanUtils implements ApplicationContextAware {
 

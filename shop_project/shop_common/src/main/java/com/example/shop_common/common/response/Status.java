@@ -2,7 +2,9 @@ package com.example.shop_common.common.response;
 
 
 /**
- * 枚举类对象
+ * @author duo.tao
+ * @Description: 枚举类对象
+ * @date 2022-06-13 23:14
  */
 public enum Status {
 

@@ -6,6 +6,11 @@ import com.example.shop_common.common.response.Status;
 
 import java.util.List;
 
+/**
+ * @author duo.tao
+ * @Description: 返回信息处理工具类
+ * @date 2022-06-13 23:14
+ */
 public class ResultUtil {
 
 

@@ -77,6 +77,8 @@ public class GeneratorCodeConfig {
         strategy.setRestControllerStyle(true);
         strategy.setSuperEntityClass(BaseEntity.class);
         strategy.setSuperMapperClass("com.example.shop_common.common.mybatis.ExtBaseMapper");
+        strategy.setSuperServiceClass("com.example.shop_common.common.service.CrudService");
+        strategy.setSuperServiceImplClass("com.example.shop_common.common.service.CrudServiceImpl");
         strategy.setEntityLombokModel(true);
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
