@@ -1,6 +1,5 @@
 package com.example.shop_common.common.service;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
@@ -80,7 +79,7 @@ public interface CrudService<T> {
      * @param queryWrapper the queryWrapper
      * @return the t
      */
-    T findOneByCondition(QueryWrapper<T> queryWrapper);
+    T findOneByWrapper(QueryWrapper<T> queryWrapper);
 
     /**
      * Find the by condition.
@@ -88,7 +87,7 @@ public interface CrudService<T> {
      * @param queryWrapper the queryWrapper
      * @return the list
      */
-    List<T> findByCondition(Wrapper<T> queryWrapper);
+    List<T> findByCondition(QueryWrapper<T> queryWrapper);
 
 	/**
 	 * Find Count by condition.
@@ -96,7 +95,7 @@ public interface CrudService<T> {
 	 * @param queryWrapper the queryWrapper
 	 * @return the list
 	 */
-	int selectCount(Wrapper<T> queryWrapper);
+	int selectCount(QueryWrapper<T> queryWrapper);
 
     /**
      * Delete by condition.
@@ -104,7 +103,7 @@ public interface CrudService<T> {
      * @param queryWrapper the objects
      * @return the int
      */
-    int deleteByCondition(Wrapper<T> queryWrapper);
+    int deleteByCondition(QueryWrapper<T> queryWrapper);
 
     /**
      * Count by condition.
@@ -112,10 +111,10 @@ public interface CrudService<T> {
      * @param queryWrapper the queryWrapper
      * @return the long
      */
-	Integer countByCondition(Wrapper<T> queryWrapper);
+	Integer countByCondition(QueryWrapper<T> queryWrapper);
 
 
-	IPage<T> selectPage(IPage<T> page,Wrapper<T> wrapper);
+	IPage<T> selectPage(IPage<T> page,QueryWrapper<T> wrapper);
 
-	IPage<Map<String, Object>> selectMapsPage(IPage<T> page, Wrapper<T> wrapper);
+	IPage<Map<String, Object>> selectMapsPage(IPage<T> page, QueryWrapper<T> wrapper);
 }

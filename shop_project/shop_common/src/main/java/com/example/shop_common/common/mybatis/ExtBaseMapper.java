@@ -3,8 +3,6 @@ package com.example.shop_common.common.mybatis;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.shop_common.entity.BaseEntity;
 
-import java.io.Serializable;
-
 
 /**
  * @author duo.tao
@@ -13,8 +11,7 @@ import java.io.Serializable;
  */
 public interface ExtBaseMapper<T extends BaseEntity> extends BaseMapper<T> {
 
-    @Override
-    T selectById(Serializable id);
+
 
     /**
      * 批量保存

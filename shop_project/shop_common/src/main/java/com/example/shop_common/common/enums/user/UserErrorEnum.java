@@ -11,6 +11,7 @@ public enum UserErrorEnum implements IName {
 
     USER_ALREADY_EXISTS("用户已存在"),
     USER_ENTERED_TWO_DIFFERENT_PASSWORDS("用户两次输入密码不一致"),
+    USER_USERNAME_OR_PASSWORD_ERROR("用户名或密码错误"),
     ;
 
     private final String name;

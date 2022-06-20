@@ -1,6 +1,7 @@
 package com.example.shop_user.service;
 
 import com.example.shop_common.common.service.CrudService;
+import com.example.shop_user.dto.LoginUserDto;
 import com.example.shop_user.dto.RegisterUserDto;
 import com.example.shop_user.entity.User;
 
@@ -19,5 +20,6 @@ public interface IUserService extends CrudService<User> {
 
     User createNewUser(RegisterUserDto user, HttpServletRequest httpRequest) throws NoSuchAlgorithmException;
 
-    User getById(Integer id);
+    String loginUser(LoginUserDto user) throws NoSuchAlgorithmException;
+
 }

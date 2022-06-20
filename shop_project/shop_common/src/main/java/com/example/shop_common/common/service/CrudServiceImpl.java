@@ -1,9 +1,10 @@
 package com.example.shop_common.common.service;
 
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.shop_common.common.constant.NumberConstant;
+import com.example.shop_common.common.enums.BooleanEnum;
 import com.example.shop_common.common.mybatis.ExtBaseMapper;
 import com.example.shop_common.entity.BaseEntity;
 import com.example.shop_common.utils.DataUtil;
@@ -27,17 +28,6 @@ public abstract class CrudServiceImpl<D extends ExtBaseMapper<T>, T extends Base
     protected D dao;
 
     @Override
-    public T get(Serializable id) {
-        return dao.selectById(id);
-    }
-
-    @Override
-    public List<T> getList(List<Serializable> idList) {
-        return dao.selectList(new QueryWrapper<T>().in("id", idList));
-    }
-
-
-    @Override
     public int save(T entity) {
         entity.setUpdateBy(0);
         entity.setUpdateTime(new Date());
@@ -50,22 +40,14 @@ public abstract class CrudServiceImpl<D extends ExtBaseMapper<T>, T extends Base
         return dao.updateById(entity);
     }
 
-
-    /**
-     * Upsert.
-     *
-     * @param entity the entity
-     * @return the int
-     */
     @Override
     public int upsert(T entity) {
-        boolean isNewRecord = DataUtil.isNull(entity.getId());
-        return isNewRecord ? dao.insert(entity) : dao.updateById(entity);
+        return save(entity);
     }
 
     @Override
     public int insert(T entity) {
-        return dao.insert(entity);
+        return save(entity);
     }
 
     @Override
@@ -75,13 +57,28 @@ public abstract class CrudServiceImpl<D extends ExtBaseMapper<T>, T extends Base
 
     @Override
     public int update(T entity) {
-        return dao.updateById(entity);
+        return save(entity);
     }
 
 
     @Override
     public int delete(String id) {
-        return dao.deleteById(id);
+        T data = get(id);
+        if (DataUtil.isNull(data)){
+            return NumberConstant.ZERO;
+        }
+        data.setIsDeleted(BooleanEnum.TRUE.getIndex());
+        return save(data);
+    }
+
+    @Override
+    public T get(Serializable id) {
+        return dao.selectOne(new QueryWrapper<T>().eq("id", id).eq("is_deleted",BooleanEnum.FALSE.getIndex()));
+    }
+
+    @Override
+    public List<T> getList(List<Serializable> idList) {
+        return dao.selectList(new QueryWrapper<T>().in("id", idList).eq("is_deleted",BooleanEnum.FALSE.getIndex()));
     }
 
 
@@ -92,7 +89,8 @@ public abstract class CrudServiceImpl<D extends ExtBaseMapper<T>, T extends Base
      * @return the t
      */
     @Override
-    public T findOneByCondition(QueryWrapper<T> queryWrapper) {
+    public T findOneByWrapper(QueryWrapper<T> queryWrapper) {
+        queryWrapper.eq("is_deleted",BooleanEnum.FALSE.getIndex());
         return dao.selectOne(queryWrapper);
     }
 
@@ -103,7 +101,8 @@ public abstract class CrudServiceImpl<D extends ExtBaseMapper<T>, T extends Base
      * @return the list
      */
     @Override
-    public List<T> findByCondition(Wrapper<T> queryWrapper) {
+    public List<T> findByCondition(QueryWrapper<T> queryWrapper) {
+        queryWrapper.eq("is_deleted",BooleanEnum.FALSE.getIndex());
         return dao.selectList(queryWrapper);
     }
 
@@ -114,7 +113,8 @@ public abstract class CrudServiceImpl<D extends ExtBaseMapper<T>, T extends Base
      * @return the list
      */
     @Override
-    public int selectCount(Wrapper<T> queryWrapper) {
+    public int selectCount(QueryWrapper<T> queryWrapper) {
+        queryWrapper.eq("is_deleted",BooleanEnum.FALSE.getIndex());
         return dao.selectCount(queryWrapper);
     }
 
@@ -125,7 +125,8 @@ public abstract class CrudServiceImpl<D extends ExtBaseMapper<T>, T extends Base
      * @return the int
      */
     @Override
-    public int deleteByCondition(Wrapper<T> queryWrapper) {
+    public int deleteByCondition(QueryWrapper<T> queryWrapper) {
+        queryWrapper.eq("is_deleted",BooleanEnum.FALSE.getIndex());
         return dao.delete(queryWrapper);
     }
 
@@ -136,7 +137,8 @@ public abstract class CrudServiceImpl<D extends ExtBaseMapper<T>, T extends Base
      * @return the long
      */
     @Override
-    public Integer countByCondition(Wrapper<T> queryWrapper) {
+    public Integer countByCondition(QueryWrapper<T> queryWrapper) {
+        queryWrapper.eq("is_deleted",BooleanEnum.FALSE.getIndex());
         return dao.selectCount(queryWrapper);
     }
 
@@ -144,7 +146,8 @@ public abstract class CrudServiceImpl<D extends ExtBaseMapper<T>, T extends Base
      * selectPage
      */
     @Override
-    public IPage<T> selectPage(IPage<T> page, Wrapper<T> wrapper) {
+    public IPage<T> selectPage(IPage<T> page, QueryWrapper<T> wrapper) {
+        wrapper.eq("is_deleted",BooleanEnum.FALSE.getIndex());
         return dao.selectPage(page, wrapper);
     }
 
@@ -153,7 +156,8 @@ public abstract class CrudServiceImpl<D extends ExtBaseMapper<T>, T extends Base
      * selectPage
      */
     @Override
-    public IPage<Map<String, Object>> selectMapsPage(IPage<T> page, Wrapper<T> wrapper) {
+    public IPage<Map<String, Object>> selectMapsPage(IPage<T> page, QueryWrapper<T> wrapper) {
+        wrapper.eq("is_deleted",BooleanEnum.FALSE.getIndex());
         return dao.selectMapsPage(page, wrapper);
     }
 
