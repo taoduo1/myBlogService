@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.util.Date;
+
 /**
  * <p>
  * 用户表
@@ -51,7 +53,7 @@ public class User extends BaseEntity {
     private String registerIp;
 
     @ApiModelProperty(value = "最后登录时间")
-    private String lastLoginTime;
+    private Date lastLoginTime;
 
     @ApiModelProperty(value = "最后登录ip")
     private String lastLoginIp;

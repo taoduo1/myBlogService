@@ -20,6 +20,15 @@ public interface IUserService extends CrudService<User> {
 
     User createNewUser(RegisterUserDto user, HttpServletRequest httpRequest) throws NoSuchAlgorithmException;
 
-    String loginUser(LoginUserDto user) throws NoSuchAlgorithmException;
+    String loginUser(LoginUserDto user, HttpServletRequest httpRequest) throws NoSuchAlgorithmException;
+
+    /**
+     *  token redis 操作接口
+     * @param token
+     * @param user
+     */
+    void setUserToken(String token, User user);
+    User getUserToken(String token);
+    void cleanUserTokenCache(String token);
 
 }

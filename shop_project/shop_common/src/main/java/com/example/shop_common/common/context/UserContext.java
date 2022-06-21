@@ -36,8 +36,7 @@ public class UserContext {
     public void genFromSession(HttpSession session) {
         if (DataUtil.isNull(session.getAttribute("userId"))) return;
         this.setUserId((Integer) session.getAttribute("userId"));
-        this.setUserName((String) session.getAttribute("staffName"));
+        this.setUserName((String) session.getAttribute("userName"));
         this.setTenantId((String) session.getAttribute("tenantId"));
-        this.setTenantName((String) session.getAttribute("tenantName"));
     }
 }

@@ -44,8 +44,8 @@ public class UserController {
 
     @ApiOperation(value = "用户登录", notes = "用户登录")
     @PostMapping(value = "/loginUser")
-    public ActionResult<String> loginUser(@Valid @RequestBody LoginUserDto loginUserDto) throws NoSuchAlgorithmException {
-        return ResultUtil.ok(userService.loginUser(loginUserDto));
+    public ActionResult<String> loginUser(@Valid @RequestBody LoginUserDto loginUserDto, HttpServletRequest httpRequest) throws NoSuchAlgorithmException {
+        return ResultUtil.ok(userService.loginUser(loginUserDto,httpRequest));
     }
 
     @ApiOperation(value = "根据id获取某个用户", notes = "根据id获取某个用户")

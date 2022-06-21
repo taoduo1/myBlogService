@@ -11,7 +11,7 @@ CREATE TABLE `user`
     `id_card`         varchar(20)           DEFAULT NULL COMMENT '身份证号',
     `register_time`   varchar(50)           DEFAULT NULL COMMENT '注册时间',
     `register_ip`     varchar(20)           DEFAULT NULL COMMENT '注册ip',
-    `last_login_time` varchar(50)           DEFAULT NULL COMMENT '最后登录时间',
+    `last_login_time` timestamp(50)           DEFAULT NULL COMMENT '最后登录时间',
     `last_login_ip`   varchar(50)           DEFAULT NULL COMMENT '最后登录ip',
     `sex`             varchar(2)            DEFAULT NULL COMMENT '性别',
     `birthday`        varchar(20)           DEFAULT NULL COMMENT '出生日期',

@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
  * @date 2022-06-13 23:14
  */
 public class MD5Utils {
+
     public static String getMD5Str(String val) throws NoSuchAlgorithmException {
         MessageDigest md5 = MessageDigest.getInstance("MD5");
         return Base64.encodeBase64String(md5.digest((val+ NormalConstant.SALT).getBytes()));
