@@ -1,6 +1,6 @@
 package com.example.shop_user.entity;
 
-import com.example.shop_common.entity.BaseEntity;
+import com.example.shop_common.entity.BaseTenantEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -19,7 +19,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @ApiModel(value="TenantConfig对象", description="租户配置信息表")
-public class TenantConfig extends BaseEntity {
+public class TenantConfig extends BaseTenantEntity {
 
     private static final long serialVersionUID = 1L;
 

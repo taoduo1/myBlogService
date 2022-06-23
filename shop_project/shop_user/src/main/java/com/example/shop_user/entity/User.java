@@ -1,6 +1,6 @@
 package com.example.shop_user.entity;
 
-import com.example.shop_common.entity.BaseEntity;
+import com.example.shop_common.entity.BaseTenantEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -21,7 +21,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @ApiModel(value="User对象", description="用户表")
-public class User extends BaseEntity {
+public class User extends BaseTenantEntity {
 
     private static final long serialVersionUID = 1L;
 

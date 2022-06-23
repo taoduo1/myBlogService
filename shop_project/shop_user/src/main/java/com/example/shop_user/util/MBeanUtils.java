@@ -1,4 +1,4 @@
-package com.example.shop_common.utils;
+package com.example.shop_user.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

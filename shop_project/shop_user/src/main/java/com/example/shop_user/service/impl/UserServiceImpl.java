@@ -11,7 +11,7 @@ import com.example.shop_common.common.redis.annotation.RedisCachePut;
 import com.example.shop_common.common.service.CrudServiceImpl;
 import com.example.shop_common.utils.DataUtil;
 import com.example.shop_common.utils.HttpUtils;
-import com.example.shop_common.utils.MBeanUtils;
+import com.example.shop_user.util.MBeanUtils;
 import com.example.shop_common.utils.MD5Utils;
 import com.example.shop_user.common.exception.UserConstant;
 import com.example.shop_user.dto.LoginUserDto;
@@ -53,7 +53,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserMapper, User> implement
             throw new CoreException(UserErrorEnum.USER_ENTERED_TWO_DIFFERENT_PASSWORDS.getName());
         }
         //校验用户是否存在
-        int count = selectCount(new QueryWrapper<User>().eq("user_name", user.getUsername()));
+        int count = selectCount(new QueryWrapper<User>().eq("username", user.getUsername()));
         if (count > 0) {
             throw new CoreException(UserErrorEnum.USER_ALREADY_EXISTS.getName());
         }
