@@ -8,18 +8,28 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="shop_user" />
+        <module name="shop_eureka" />
         <module name="shop_common" />
+        <module name="shop_product" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="demo" target="17" />
       <module name="shop_common" target="17" />
+      <module name="shop_eureka" target="17" />
+      <module name="shop_prod" target="17" />
+      <module name="shop_product" target="17" />
       <module name="shop_project" target="1.8" />
       <module name="shop_user" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="demo" options="-parameters" />
       <module name="shop_common" options="-parameters" />
+      <module name="shop_eureka" options="-parameters" />
+      <module name="shop_prod" options="-parameters" />
+      <module name="shop_product" options="-parameters" />
       <module name="shop_project" options="-parameters" />
       <module name="shop_user" options="-parameters" />
     </option>

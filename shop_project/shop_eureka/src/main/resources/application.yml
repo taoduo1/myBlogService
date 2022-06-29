@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: eureka-service
+server:
+  port: 2001    #默认端口 8761
+eureka:
+  server:
+    #禁用保护模式  一般用于测试
+    enable-self-preservation: false
+  instance:
+    # 主机名为了区分集群中不同的服务器
+    hostname: eureka1
+  # 针对单台服务器，不向自己注册，也不从自己拉取。  用于单台配置
+  client:
+    register-with-eureka: false
+    fetch-registry: true
