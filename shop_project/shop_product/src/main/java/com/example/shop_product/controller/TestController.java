@@ -25,7 +25,7 @@ public class TestController {
 
 	@RequestMapping("/getStr2")
 	public String getStr2(){
-		String str = springCloudAFeign.getStr();
+		String str = springCloudAFeign.getStr(1);
 		return str;
 	}
 }
