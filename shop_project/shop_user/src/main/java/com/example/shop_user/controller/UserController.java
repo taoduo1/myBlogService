@@ -8,6 +8,7 @@ import com.example.shop_user.dto.RegisterUserDto;
 import com.example.shop_user.entity.User;
 import com.example.shop_user.service.IUserService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +35,8 @@ public class UserController {
 
     @Resource
     private IUserService userService;
+    @Value("${server.port}")
+    private String user;
 
     @ApiOperation(value = "新建用户", notes = "新建用户")
     @PostMapping(value = "/createUser")
@@ -51,7 +54,9 @@ public class UserController {
     @ApiOperation(value = "根据id获取某个用户", notes = "根据id获取某个用户")
     @GetMapping(value = "/findById/{id}")
     public ActionResult<User> findById(@PathVariable Integer id) {
-        return ResultUtil.ok(userService.get(id));
+        User data = userService.get(id);
+        data.setCity(user);
+        return ResultUtil.ok(data);
     }
 
 
