@@ -30,7 +30,7 @@ import java.security.NoSuchAlgorithmException;
  * @since 2022-06-13
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/user/user")
 public class UserController {
 
     @Resource

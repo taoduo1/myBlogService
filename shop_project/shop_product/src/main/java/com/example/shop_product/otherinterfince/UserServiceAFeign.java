@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Service
 @FeignClient("user-server")
-public interface SpringCloudAFeign {
+public interface UserServiceAFeign {
 
-	@RequestMapping(value = "/user/findById/{id}")
+	@RequestMapping(value = "/user/user/findById/{id}")
 	String getStr(@PathVariable("id") Integer id);
 }

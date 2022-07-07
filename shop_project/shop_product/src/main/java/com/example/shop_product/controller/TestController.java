@@ -1,10 +1,6 @@
 package com.example.shop_product.controller;
 
-import com.example.shop_product.otherinterfince.SpringCloudAFeign;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 @RestController
 public class TestController {
@@ -12,8 +8,7 @@ public class TestController {
 	/*@Resource
 	private RestTemplate restTemplate;*/
 
-	@Resource
-	private SpringCloudAFeign springCloudAFeign;
+
 
 	/*@RequestMapping(value = "/getStr")
 	public String getStr(){
@@ -22,9 +17,12 @@ public class TestController {
 		return str;
 	}*/
 
+	/*@Resource
+	private UserServiceAFeign userServiceAFeign;
+
 	@RequestMapping("/getStr2")
 	public String getStr2(){
-		String str = springCloudAFeign.getStr(1);
+		String str = userServiceAFeign.getStr(1);
 		return str;
-	}
+	}*/
 }

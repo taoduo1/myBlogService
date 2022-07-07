@@ -9,5 +9,6 @@ spring cloud是一系列框架的集合：如服务发现注册、配置中心�
 5:测试两个服务间连通性
 6:测试两种方式进行远程调用  
 7:增加eureka的监听事件，监听服务状态
-8:增加负载均衡,Spring Cloud 2020.0.0版本以后对Spring Cloud NetFlix 组件进行剔除，仅保留了Eureka组件，其核心组件 Hystrix、Ribbon、Zuul、Archaius 等均进入维护状态
-spring cloud Ribbon 修改为Spring Cloud LoadBalancer 但是看下来 Spring Cloud LoadBalancer 目前仅支持轮询负载均衡策略，相对于 Ribbon 多种高可用策略还是过于简单。
+8:增加客户端负载均衡  
+9：增加网关服务
+

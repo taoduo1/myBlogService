@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>shop_eureka</artifactId>
+    <artifactId>shop_getway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>shop_eureka</name>
-    <description>shop_eureka</description>
+    <name>shop_getway</name>
+    <description>shop_getway</description>
 
 
     <properties>
@@ -22,9 +22,14 @@
 
 
     <dependencies>
+        <!--新增-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
 
         <dependency>
@@ -32,13 +37,8 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-            <version>5.7.1</version>
-        </dependency>
     </dependencies>
-
+    <!--新增-->
     <dependencyManagement>
         <dependencies>
             <dependency>
