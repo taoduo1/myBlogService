@@ -10,7 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableFeignClients //Feign 请求发送
 @EnableDiscoveryClient //服务注册
-@LoadBalancerClient(name = "user-server", configuration = LoadBalancerConfig.class)
+@LoadBalancerClient(name = "gateway-service", configuration = LoadBalancerConfig.class)
 public class ShopProductApplication {
 
     public static void main(String[] args) {

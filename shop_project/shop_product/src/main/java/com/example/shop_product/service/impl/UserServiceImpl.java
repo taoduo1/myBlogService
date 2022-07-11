@@ -1,6 +1,7 @@
 package com.example.shop_product.service.impl;
 
-import com.example.shop_product.otherinterfince.hystrix.service.UserService;
+import com.example.shop_product.otherinterfince.hystrix.service.UserGetWayService;
+import com.example.shop_product.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -11,11 +12,10 @@ import javax.annotation.Resource;
  * @date 2022-07-07 22:07
  */
 @Service
-public class UserServiceImpl implements com.example.shop_product.service.UserService {
+public class UserServiceImpl implements UserService {
 
     @Resource
-    private UserService userService;
-
+    private UserGetWayService userService;
 
     @Override
     public String getUserById(Integer id) {

@@ -1,6 +1,6 @@
 package com.example.shop_product.otherinterfince.hystrix.service.impl;
 
-import com.example.shop_product.otherinterfince.hystrix.service.UserService;
+import com.example.shop_product.otherinterfince.hystrix.service.UserGetWayService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class UserServiceHystrix implements UserService {
-
+public class UserGetWayServiceHystrix implements UserGetWayService {
 
     @Override
     public String getStr(Integer id) {
