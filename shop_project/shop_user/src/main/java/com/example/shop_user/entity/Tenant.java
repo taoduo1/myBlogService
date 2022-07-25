@@ -26,5 +26,9 @@ public class Tenant extends BaseEntity {
     @ApiModelProperty(value = "租户名称")
     private String name;
 
+    @ApiModelProperty(value = "编号")
+    private String code;
 
+    @ApiModelProperty(value = "租户类型")
+    private Integer type;
 }

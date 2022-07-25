@@ -1,7 +1,8 @@
 package com.example.shop_user.service;
 
-import com.example.shop_user.entity.Tenant;
 import com.example.shop_common.common.service.CrudService;
+import com.example.shop_user.dto.RegisterTenantDto;
+import com.example.shop_user.entity.Tenant;
 
 /**
  * <p>
@@ -12,5 +13,7 @@ import com.example.shop_common.common.service.CrudService;
  * @since 2022-06-21
  */
 public interface ITenantService extends CrudService<Tenant> {
+
+    void registerTenant(RegisterTenantDto user);
 
 }

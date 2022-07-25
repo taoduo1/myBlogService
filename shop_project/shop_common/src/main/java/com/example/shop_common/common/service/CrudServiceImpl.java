@@ -4,7 +4,7 @@ package com.example.shop_common.common.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.shop_common.common.constant.NumberConstant;
-import com.example.shop_common.common.enums.BooleanEnum;
+import com.example.shop_common.common.enums.common.BooleanEnum;
 import com.example.shop_common.common.mybatis.ExtBaseMapper;
 import com.example.shop_common.entity.BaseEntity;
 import com.example.shop_common.utils.DataUtil;

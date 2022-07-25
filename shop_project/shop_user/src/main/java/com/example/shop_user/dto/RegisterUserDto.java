@@ -30,5 +30,10 @@ public class RegisterUserDto {
     @Size(min = 11,max = 11)
     private String phone;
 
+    @ApiModelProperty(value = "集团标识码")
+    @Size(min = 11,max = 11)
+    private String groupCode;
 
+    //租户类型
+    private Integer tenantType;
 }

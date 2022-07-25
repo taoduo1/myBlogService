@@ -1,5 +1,6 @@
-package com.example.shop_common.common.enums;
+package com.example.shop_common.common.enums.common;
 
+import com.example.shop_common.common.enums.IIndex;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 

@@ -17,7 +17,7 @@ CREATE TABLE `user`
     `birthday`        varchar(20)           DEFAULT NULL COMMENT '出生日期',
     `province`        varchar(50)           DEFAULT NULL COMMENT '省',
     `city`            varchar(50)           DEFAULT NULL COMMENT '城市',
-    `level`           tinyint(11)           DEFAULT NULL COMMENT '用户级别',
+    `level`           tinyint(4)            DEFAULT NULL COMMENT '用户级别',
     `login_count`     int(11)               DEFAULT NULL COMMENT '登录次数',
     `tenant_id`       int(11)               DEFAULT 0 COMMENT '租户id',
     `remark`          varchar(50)           DEFAULT '' COMMENT '备注',
@@ -35,7 +35,9 @@ CREATE TABLE `user`
 CREATE TABLE `tenant`
 (
     `id`          int(11)     NOT NULL AUTO_INCREMENT,
-    `name`        varchar(50) NOT NULL DEFAULT '' COMMENT '租户名称',
+    `name`        varchar(50) NOT NULL DEFAULT '' COMMENT '名称',
+    `code`        varchar(50) NOT NULL DEFAULT '' COMMENT '编号',
+    `type`       tinyint(4)           DEFAULT NULL COMMENT '类型',
     `remark`      varchar(50)          DEFAULT '' COMMENT '备注',
     `is_deleted`  int(3)               DEFAULT 0 COMMENT '是否删除',
     `create_by`   int(11)     NOT NULL COMMENT '创建人',
