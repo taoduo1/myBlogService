@@ -36,18 +36,18 @@
             <version>0.9.1</version>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>org.activiti</groupId>
             <artifactId>activiti-spring-boot-starter</artifactId>
             <version>7.1.0.M1</version>
             <exclusions>
-                <!-- 需要排除自带的mybatis -->
+                &lt;!&ndash; 需要排除自带的mybatis &ndash;&gt;
                 <exclusion>
                     <groupId>org.mybatis</groupId>
                     <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
+        </dependency>-->
 
 
         <dependency>

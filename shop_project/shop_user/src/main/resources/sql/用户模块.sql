@@ -1,7 +1,7 @@
 -- 租户表、用户表、角色表、权限表、角色权限表、用户角色表
 CREATE TABLE `user`
 (
-    `id`              int(11)      NOT NULL AUTO_INCREMENT,
+    `id`              int(11) NOT NULL AUTO_INCREMENT,
     `username`        varchar(255) NOT NULL DEFAULT '' COMMENT '用户名',
     `password`        varchar(255)          DEFAULT NULL COMMENT '密码',
     `email`           varchar(255)          DEFAULT NULL COMMENT '电子邮箱',
@@ -17,14 +17,14 @@ CREATE TABLE `user`
     `birthday`        varchar(20)           DEFAULT NULL COMMENT '出生日期',
     `province`        varchar(50)           DEFAULT NULL COMMENT '省',
     `city`            varchar(50)           DEFAULT NULL COMMENT '城市',
-    `level`           tinyint(4)            DEFAULT NULL COMMENT '用户级别',
-    `login_count`     int(11)               DEFAULT NULL COMMENT '登录次数',
-    `tenant_id`       int(11)               DEFAULT 0 COMMENT '租户id',
+    `level`           tinyint(4) DEFAULT NULL COMMENT '用户级别',
+    `login_count`     int(11) DEFAULT NULL COMMENT '登录次数',
+    `tenant_id`       int(11) DEFAULT 0 COMMENT '租户id',
     `remark`          varchar(50)           DEFAULT '' COMMENT '备注',
-    `is_deleted`      int(3)                DEFAULT 0 COMMENT '是否删除',
-    `create_by`       int(11)      NOT NULL COMMENT '创建人',
+    `is_deleted`      int(3) DEFAULT 0 COMMENT '是否删除',
+    `create_by`       int(11) NOT NULL COMMENT '创建人',
     `create_time`     timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_by`       int(11)      NOT NULL COMMENT '更新人',
+    `update_by`       int(11) NOT NULL COMMENT '更新人',
     `update_time`     timestamp             DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
@@ -34,15 +34,15 @@ CREATE TABLE `user`
 -- 租户表
 CREATE TABLE `tenant`
 (
-    `id`          int(11)     NOT NULL AUTO_INCREMENT,
+    `id`          int(11) NOT NULL AUTO_INCREMENT,
     `name`        varchar(50) NOT NULL DEFAULT '' COMMENT '名称',
     `code`        varchar(50) NOT NULL DEFAULT '' COMMENT '编号',
-    `type`       tinyint(4)           DEFAULT NULL COMMENT '类型',
+    `type`        tinyint(4) DEFAULT NULL COMMENT '类型',
     `remark`      varchar(50)          DEFAULT '' COMMENT '备注',
-    `is_deleted`  int(3)               DEFAULT 0 COMMENT '是否删除',
-    `create_by`   int(11)     NOT NULL COMMENT '创建人',
+    `is_deleted`  int(3) DEFAULT 0 COMMENT '是否删除',
+    `create_by`   int(11) NOT NULL COMMENT '创建人',
     `create_time` timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_by`   int(11)     NOT NULL COMMENT '更新人',
+    `update_by`   int(11) NOT NULL COMMENT '更新人',
     `update_time` timestamp            DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
@@ -51,8 +51,8 @@ CREATE TABLE `tenant`
 -- 租户配置表
 CREATE TABLE `tenant_config`
 (
-    `id`          int(11)   NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    `type`        tinyint(4)         DEFAULT 0 COMMENT '对应属性名',
+    `id`          int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    `type`        tinyint(4) DEFAULT 0 COMMENT '对应属性名',
     `value1`      varchar(50)        DEFAULT '' COMMENT '属性值1',
     `value2`      varchar(50)        DEFAULT '' COMMENT '属性值2',
     `value3`      varchar(50)        DEFAULT '' COMMENT '属性值3',
@@ -63,13 +63,13 @@ CREATE TABLE `tenant_config`
     `value8`      varchar(50)        DEFAULT '' COMMENT '属性值',
     `value9`      varchar(50)        DEFAULT '' COMMENT '属性值',
     `value10`     varchar(50)        DEFAULT '' COMMENT '属性值',
-    `enable`      tinyint(4)         DEFAULT 0 COMMENT '是否启用',
-    `tenant_id`   int(11)            DEFAULT 0 COMMENT '租户id',
+    `enable`      tinyint(4) DEFAULT 0 COMMENT '是否启用',
+    `tenant_id`   int(11) DEFAULT 0 COMMENT '租户id',
     `remark`      varchar(50)        DEFAULT '' COMMENT '备注',
-    `is_deleted`  int(3)             DEFAULT 0 COMMENT '是否删除',
-    `create_by`   int(11)   NOT NULL COMMENT '创建人',
+    `is_deleted`  int(3) DEFAULT 0 COMMENT '是否删除',
+    `create_by`   int(11) NOT NULL COMMENT '创建人',
     `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_by`   int(11)   NOT NULL COMMENT '更新人',
+    `update_by`   int(11) NOT NULL COMMENT '更新人',
     `update_time` timestamp          DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB

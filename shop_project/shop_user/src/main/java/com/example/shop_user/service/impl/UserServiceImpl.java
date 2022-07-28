@@ -50,8 +50,8 @@ public class UserServiceImpl extends CrudServiceImpl<UserMapper, User> implement
     @Override
     public User createNewUser(RegisterUserDto user, HttpServletRequest httpRequest) throws NoSuchAlgorithmException {
         //判断用户注册类型：如果是自注册用户直接放行，如果是管理租户或者是集团租户用户注册，则校验集团不能为空
-        if (DataUtil.notNull(user.getTenantType()) && TenantTypeEnum.USER_REGISTER_TENANT.notMatch(user.getTenantType())) {
-            //tenantService.findOneByWrapper()
+        if (DataUtil.notNull(user.getTenantType()) && (TenantTypeEnum.USER_REGISTER_TENANT.match(user.getTenantType()) || TenantTypeEnum.USER_REGISTER_TENANT.match(user.getTenantType()))) {
+            throw new CoreException(UserErrorEnum.USER_TENANT_CODE_IS_NULL.getName());
         }
         //校验密码
         if (!user.getPassword().equals(user.getConfirmPassword())) {
@@ -90,19 +90,20 @@ public class UserServiceImpl extends CrudServiceImpl<UserMapper, User> implement
         user.setLastLoginIp(ipAddress);
         user.setLastLoginTime(new Date());
         save(user);
-        //token写入redis
-        String token = MD5Utils.getMD5Str(user.getUsername());
-        IUserService bean = MBeanUtils.getBean(IUserService.class);
-        bean.setUserToken(token, user);
+        //使用jwt加密用户信息后，用户信息
+        String token = "";
+
         return token;
     }
 
+    @Deprecated
     @RedisCachePut(key = NormalConstant.REDIS_TOKEN_KEY, minutes = 2 * 60)
     @Override
     public void setUserToken(String token, User user) {
         // 由AOP实现
     }
 
+    @Deprecated
     @RedisCacheGet(key = NormalConstant.REDIS_TOKEN_KEY, minutes = 2 * 60)
     @Override
     public User getUserToken(String token) {
@@ -110,6 +111,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserMapper, User> implement
         throw new CoreException("请登陆！");
     }
 
+    @Deprecated
     @RedisCacheDelete(key = NormalConstant.REDIS_TOKEN_KEY)
     @Override
     public void cleanUserTokenCache(String token) {
