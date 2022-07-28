@@ -19,7 +19,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "set PORT=8400 && craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
@@ -45,5 +45,5 @@
   "devDependencies": {
     "@craco/craco": "^6.4.3"
   },
-  "proxy": "http://127.0.0.1:8081"
+  "proxy": "http://localhost:8300"
 }
