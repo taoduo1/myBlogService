@@ -22,13 +22,15 @@ public interface IUserService extends CrudService<User> {
 
     String loginUser(LoginUserDto user, HttpServletRequest httpRequest) throws NoSuchAlgorithmException;
 
+    void loginOut(String token);
+
     /**
      *  token redis 操作接口
      * @param token
      * @param user
      */
     void setUserToken(String token, User user);
-    User getUserToken(String token);
+    User getUserByToken(String token);
     void cleanUserTokenCache(String token);
 
 }

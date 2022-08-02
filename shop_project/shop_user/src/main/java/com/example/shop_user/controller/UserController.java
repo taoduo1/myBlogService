@@ -55,6 +55,13 @@ public class UserController {
         return ResultUtil.ok(data);
     }
 
+    @ApiOperation(value = "用户注销", notes = "用户注销")
+    @GetMapping(value = "/loginOut")
+    public ActionResult<Void> loginOut(HttpServletRequest httpRequest) {
+        userService.loginOut(httpRequest.getHeader("token"));
+        return ResultUtil.ok();
+    }
+
 
 
 

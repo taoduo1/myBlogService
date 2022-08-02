@@ -90,11 +90,22 @@ public class UserServiceImpl extends CrudServiceImpl<UserMapper, User> implement
         user.setLastLoginIp(ipAddress);
         user.setLastLoginTime(new Date());
         save(user);
-        //使用jwt加密用户信息后，用户信息
-        String token = "";
-
+        String token = MD5Utils.getMD5Str(user.getUsername());
+        //用户信息写入redis
+        MBeanUtils.getBean(IUserService.class).setUserToken(token, user);
+        // TODO: 2022/8/2 用户权限写入
         return token;
     }
+
+    @Override
+    public void loginOut(String token) {
+        User user = MBeanUtils.getBean(IUserService.class).getUserByToken(token);
+        if (DataUtil.isNull(user)){
+            throw new CoreException(UserErrorEnum.USER_TOKEN_TIME_OUT.getName());
+        }
+        MBeanUtils.getBean(IUserService.class).cleanUserTokenCache(token);
+    }
+
 
     @Deprecated
     @RedisCachePut(key = NormalConstant.REDIS_TOKEN_KEY, minutes = 2 * 60)
@@ -106,7 +117,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserMapper, User> implement
     @Deprecated
     @RedisCacheGet(key = NormalConstant.REDIS_TOKEN_KEY, minutes = 2 * 60)
     @Override
-    public User getUserToken(String token) {
+    public User getUserByToken(String token) {
         logger.info("redis-session无效");
         throw new CoreException("请登陆！");
     }
