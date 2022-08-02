@@ -49,4 +49,6 @@ public @interface RedisCachePut {
      */
     boolean autoIncludeTenantId() default false;
 
+
+    String type() default "hash";
 }

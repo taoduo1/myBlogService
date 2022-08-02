@@ -4,6 +4,7 @@ import com.example.shop_common.common.redis.annotation.RedisCacheDelete;
 import com.example.shop_common.common.redis.annotation.RedisCacheGet;
 import com.example.shop_common.common.redis.annotation.RedisCachePut;
 import com.example.shop_common.utils.CollectionUtils;
+import com.example.shop_common.utils.DataUtil;
 import com.example.shop_common.utils.JSONUtils;
 import com.google.common.collect.Maps;
 import org.aspectj.lang.JoinPoint;
@@ -20,15 +21,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -89,12 +89,12 @@ public class CacheAspect {
             if (result != null) {
                 Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(1);
                 resultMap.put(mapKey, result);
-                updateCache(key, resultMap, anno.minutes());
+                updateHashCache(key, resultMap, anno.minutes());
             } else {
-                updateCache(key, null, anno.minutes());
+                updateHashCache(key, null, anno.minutes());
             }
         } else {
-            updateCache(key, result, anno.minutes());
+            updateHashCache(key, result, anno.minutes());
         }
         return result;
     }
@@ -114,13 +114,13 @@ public class CacheAspect {
         String key = genKey(anno.key(), Arrays.copyOf(args, args.length - 1));
         Object result = args[args.length - 1];
         if (anno.enableMap()) {
-            updateCache(key, (Map<String, Object>) result, anno.minutes());
+            updateHashCache(key, (Map<String, Object>) result, anno.minutes());
         } else {
-            updateCache(key, result, anno.minutes());
+            updateHashCache(key, result, anno.minutes());
         }
     }
 
-    private void updateCache(String key, Object result, long minutes) {
+    private void updateHashCache(String key, Object result, long minutes) {
         LOGGER.debug("缓存更新 key={}", key);
         if (result != null) {
             if (minutes < 0) {
@@ -135,7 +135,7 @@ public class CacheAspect {
 
     }
 
-    private void updateCache(String key, Map<String, Object> result, long minutes) {
+    private void updateHashCache(String key, Map<String, Object> result, long minutes) {
         LOGGER.debug("缓存更新 key={}", key);
         HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
         if (result != null) {
@@ -147,8 +147,20 @@ public class CacheAspect {
             hashOperations.delete(key);
 
         }
-
     }
+
+    private void updateStringCache(String key, String HKey,String HValue, long minutes) {
+        LOGGER.debug("缓存更新 key={}", key);
+        ValueOperations<String, String> stringOperations = redisTemplate.opsForValue();
+        if (DataUtil.notNullOrEmpty(HKey) && DataUtil.notNullOrEmpty(HValue)) {
+            stringOperations.set(HKey,HValue);
+            stringOperations.getOperations().expire(key, minutes, TimeUnit.MINUTES);
+        } else {
+            redisTemplate.delete(key);
+
+        }
+    }
+
 
     /**
      * Handle cache delete.
