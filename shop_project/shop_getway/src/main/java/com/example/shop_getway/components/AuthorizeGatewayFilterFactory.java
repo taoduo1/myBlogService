@@ -1,12 +1,17 @@
 package com.example.shop_getway.components;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author duo.tao
@@ -22,20 +27,22 @@ public class AuthorizeGatewayFilterFactory extends AbstractGatewayFilterFactory<
         super(Config.class);
     }
 
+    private List<String> ignoreUrI = Arrays.asList("/user/user/loginUser");
+
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
-            String token = request.getHeaders().getFirst("token");
-            logger.info("token:" + token);
-            if (null == token) {
-                token = request.getQueryParams().getFirst("token");
+            if (ignoreUrI.contains(request.getURI().getPath())){
+                return chain.filter(exchange);
             }
+            String token = request.getHeaders().getFirst("authorization");
+            logger.info("token:" + token);
             ServerHttpResponse response = exchange.getResponse();
-            /*if (StringUtils.isEmpty(token)) {
+            if (StringUtils.isEmpty(token)) {
                 response.setStatusCode(HttpStatus.UNAUTHORIZED);
                 return response.setComplete();
-            }*/
+            }
             return chain.filter(exchange);
         };
     }
