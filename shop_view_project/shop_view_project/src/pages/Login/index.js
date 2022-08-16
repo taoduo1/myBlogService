@@ -31,7 +31,8 @@ const Login = () => {
         <div className="login">
             <Card className="login-container">
                 <img className="login-logo" src={logo} alt="" />
-                <Form
+                <Form 
+                id="login"
                     initialValues={{
                         remember: true,
                     }}
