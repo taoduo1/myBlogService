@@ -3,8 +3,11 @@ package com.example.shop_getway.components;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -27,19 +30,27 @@ public class AuthorizeGatewayFilterFactory extends AbstractGatewayFilterFactory<
         super(Config.class);
     }
 
+    @Autowired
+    @Qualifier("stringRedisTemplate")
+    private StringRedisTemplate redisTemplate;
+
     private List<String> ignoreUrI = Arrays.asList("/user/user/loginUser");
 
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
-            if (ignoreUrI.contains(request.getURI().getPath())){
+            /*if (ignoreUrI.contains(request.getURI().getPath())){
                 return chain.filter(exchange);
-            }
-            String token = request.getHeaders().getFirst("authorization");
+            }*/
+            String token = request.getHeaders().getFirst("token");
             logger.info("token:" + token);
             ServerHttpResponse response = exchange.getResponse();
             if (StringUtils.isEmpty(token)) {
+                response.setStatusCode(HttpStatus.UNAUTHORIZED);
+                return response.setComplete();
+            }
+            if (StringUtils.isEmpty(redisTemplate.opsForValue().get("token:"+token ))) {
                 response.setStatusCode(HttpStatus.UNAUTHORIZED);
                 return response.setComplete();
             }
@@ -48,6 +59,5 @@ public class AuthorizeGatewayFilterFactory extends AbstractGatewayFilterFactory<
     }
 
     public static class Config {
-        static String s = "123456";
     }
 }

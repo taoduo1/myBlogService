@@ -5,14 +5,14 @@ import com.example.shop_common.common.constant.NormalConstant;
 import com.example.shop_common.common.dto.CoreException;
 import com.example.shop_common.common.enums.user.UserErrorEnum;
 import com.example.shop_common.common.enums.user.UserLevelEnum;
-import com.example.shop_common.common.redis.annotation.RedisCacheDelete;
-import com.example.shop_common.common.redis.annotation.RedisCacheGet;
-import com.example.shop_common.common.redis.annotation.RedisCachePut;
 import com.example.shop_common.common.service.CrudServiceImpl;
 import com.example.shop_common.utils.DataUtil;
 import com.example.shop_common.utils.HttpUtils;
 import com.example.shop_common.utils.MD5Utils;
 import com.example.shop_user.common.constant.UserConstant;
+import com.example.shop_user.common.redis.annotation.RedisCacheDelete;
+import com.example.shop_user.common.redis.annotation.RedisCacheGet;
+import com.example.shop_user.common.redis.annotation.RedisCachePut;
 import com.example.shop_user.dto.LoginUserDto;
 import com.example.shop_user.dto.RegisterUserDto;
 import com.example.shop_user.entity.Tenant;
@@ -23,6 +23,9 @@ import com.example.shop_user.service.IUserService;
 import com.example.shop_user.util.MBeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -94,7 +97,8 @@ public class UserServiceImpl extends CrudServiceImpl<UserMapper, User> implement
         save(user);
         String token = MD5Utils.getMD5Str(user.getUsername());
         //用户信息写入redis
-        MBeanUtils.getBean(IUserService.class).setUserToken(token, user);
+        IUserService clazz = MBeanUtils.getBean(IUserService.class);
+        clazz.setUserToken(token, user);
         // TODO: 2022/8/2 用户权限写入
         return token;
     }

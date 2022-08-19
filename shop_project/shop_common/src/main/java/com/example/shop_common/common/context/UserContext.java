@@ -18,8 +18,7 @@ public class UserContext {
 
     private int userId;
     private String userName;
-    private String tenantId;
-    private String tenantName;
+    private Integer tenantId;
     private String token = StringUtils.EMPTY;// 此次访问token
 
     @JsonIgnore
@@ -33,10 +32,11 @@ public class UserContext {
     }
 
     @JsonIgnore
-    public void genFromSession(HttpSession session) {
-        if (DataUtil.isNull(session.getAttribute("userId"))) return;
-        this.setUserId((Integer) session.getAttribute("userId"));
-        this.setUserName((String) session.getAttribute("userName"));
-        this.setTenantId((String) session.getAttribute("tenantId"));
+    public void genContext(Integer userId,String userName,Integer tenantId,String token) {
+        if (DataUtil.isNull(userId)) return;
+        this.setUserId(userId);
+        this.setUserName(userName);
+        this.setTenantId(tenantId);
+        this.setToken(token);
     }
 }

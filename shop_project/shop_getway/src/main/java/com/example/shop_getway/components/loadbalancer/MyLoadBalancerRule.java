@@ -11,6 +11,7 @@ import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author duo.tao
@@ -33,25 +34,23 @@ public class MyLoadBalancerRule implements ReactorServiceInstanceLoadBalancer {
     @Override
     public Mono<Response<ServiceInstance>> choose(Request request) {
         ServiceInstanceListSupplier supplier = serviceInstanceListSupplierProvider.getIfAvailable();
-        return supplier.get().next().map(this::getInstanceResponse);
+        return supplier.get().next().map(this::getRandomInstanceResponse);
     }
 
     //使用随机数获取服务
-//    private Response<ServiceInstance> getInstanceResponse(
-//            List<ServiceInstance> instances) {
-//        System.out.println("进来了");
-//        if (instances.isEmpty()) {
-//            return new EmptyResponse();
-//        }
-//
-//        System.out.println("进行随机选取服务");
-//        // 随机算法
-//        int size = instances.size();
-//        Random random = new Random();
-//        ServiceInstance instance = instances.get(random.nextInt(size));
-//
-//        return new DefaultResponse(instance);
-//    }
+    private Response<ServiceInstance> getRandomInstanceResponse(List<ServiceInstance> instances) {
+        if (instances.isEmpty()) {
+            return new EmptyResponse();
+        }
+
+        System.out.println("进行随机选取服务");
+        // 随机算法
+        int size = instances.size();
+        Random random = new Random();
+        ServiceInstance instance = instances.get(random.nextInt(size));
+
+        return new DefaultResponse(instance);
+    }
 
     //每个服务访问5次，然后换下一个服务
     private Response<ServiceInstance> getInstanceResponse(List<ServiceInstance> instances) {
