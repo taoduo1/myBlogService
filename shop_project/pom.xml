@@ -17,6 +17,7 @@
         <module>shop_eureka</module>
         <module>shop_product</module>
         <module>shop_getway</module>
+        <module>shop_es</module>
     </modules>
 
 

@@ -21,7 +21,14 @@ public class GlobalInterceptor implements HandlerInterceptor {
     private static final Logger logger = LoggerFactory.getLogger(GlobalInterceptor.class);
 
     private static final Set<String> ignoreUrlList = Sets.newHashSet(
-            "/api/user/user/login"
+            "/api/user/user/login",
+            //swagger相关放行
+            "/swagger-ui.html",
+            "/webjars",
+            "/configuration/ui",
+            "/swagger-resources",
+            "/v2/api-docs",
+            "/configuration/security"
     );
 
 
@@ -50,7 +57,7 @@ public class GlobalInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         SystemContext.clear();
     }
 }

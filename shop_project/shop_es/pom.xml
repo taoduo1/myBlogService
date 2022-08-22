@@ -8,11 +8,12 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
+
     <groupId>com.example</groupId>
-    <artifactId>shop_user</artifactId>
+    <artifactId>shop_es</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>shop_user</name>
-    <description>shop_user</description>
+    <name>shop_es</name>
+    <description>shop_es</description>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -20,20 +21,15 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.example</groupId>
             <artifactId>shop_common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.auth0</groupId>
-            <artifactId>java-jwt</artifactId>
-            <version>3.8.2</version>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
         </dependency>
 
         <dependency>
@@ -47,7 +43,10 @@
             </exclusions>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

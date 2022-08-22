@@ -2,37 +2,29 @@ import { Card, Form, Input, Button, Checkbox, message } from "antd"
 import logo from "@/assets/logo.png"
 import './index.scss'
 import { useNavigate } from "react-router-dom"
-import { http, setToken } from "@/utils";
+// import { http, setToken } from "@/utils";
+import { useStore } from "@/store"
+
 
 const Login = () => {
 
+    const { loginStore } = useStore();
     const navigate = useNavigate();
 
     //登录方法
     async function onFinish(values) {
-        try{
-            const res = await http.post('/api/user/user/loginUser', {
-                password: values.password,
-                username: values.username
-            })
-            if(res.success){
-                //存入token
-                console.log("123", res.data)
-                //存入 localStorage
-                setToken(res.data);
-                //跳转首页
-                navigate('/layout');
-                message.success('登录成功');
-            }else{
-                res.errorInfo.forEach(data => {
-                    message.error(data.message)    
-                });
-            }
-
-        }catch(e){
+        try {
+            await loginStore.getToken({
+                username: values.username,
+                password: values.password
+            });
+            //跳转首页
+            navigate('/layout');
+            message.success('登录成功');
+        } catch (e) {
             message.success(e.response?.data?.message || '登录失败');
         }
-        
+
     };
 
 
