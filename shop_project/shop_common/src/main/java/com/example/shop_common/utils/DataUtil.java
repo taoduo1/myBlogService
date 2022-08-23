@@ -1,6 +1,5 @@
 package com.example.shop_common.utils;
 
-import com.alibaba.fastjson.JSON;
 import com.example.shop_common.common.dto.CoreException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.ObjectUtils;
@@ -1087,13 +1086,6 @@ public class DataUtil {
 
     public static boolean notValidId(Integer i) {
         return i == null || i <= 0;
-    }
-
-    /**
-     * String转Map
-     */
-    public static Map<String, Object> StringToMap(String s) {
-        return DataUtil.objectToMap(JSON.parseObject(s));
     }
 
     public static Double StringToDouble(String s) {

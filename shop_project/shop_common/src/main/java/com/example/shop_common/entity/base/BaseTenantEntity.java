@@ -1,4 +1,4 @@
-package com.example.shop_common.entity;
+package com.example.shop_common.entity.base;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.shop_common.common.constant.NumberConstant;
 import com.example.shop_common.common.enums.common.BooleanEnum;
 import com.example.shop_common.common.mybatis.ExtBaseMapper;
-import com.example.shop_common.entity.BaseEntity;
+import com.example.shop_common.entity.base.BaseEntity;
 import com.example.shop_common.utils.DataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -1,6 +1,6 @@
 package com.example.shop_user.entity;
 
-import com.example.shop_common.entity.BaseEntity;
+import com.example.shop_common.entity.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

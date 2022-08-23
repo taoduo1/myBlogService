@@ -1,7 +1,7 @@
 package com.example.shop_common.common.mybatis;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.shop_common.entity.BaseEntity;
+import com.example.shop_common.entity.base.BaseEntity;
 
 
 /**

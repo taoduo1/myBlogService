@@ -1,4 +1,4 @@
-package com.example.shop_common.entity;
+package com.example.shop_common.entity.base;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

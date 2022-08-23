@@ -1,6 +1,6 @@
 package com.example.shop_product.thirdto;
 
-import com.example.shop_common.entity.BaseTenantEntity;
+import com.example.shop_common.entity.base.BaseTenantEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

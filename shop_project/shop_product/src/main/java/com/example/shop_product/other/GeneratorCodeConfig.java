@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.TemplateConfig;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
-import com.example.shop_common.entity.BaseEntity;
+import com.example.shop_common.entity.base.BaseEntity;
 
 import java.util.Scanner;
 

@@ -67,7 +67,7 @@ public class ArticleAdvanceController {
      * @return 查询结果
      */
     @GetMapping(value = "/scrollQuery")
-    public String scroll(String scrollId, Integer pageSize) {
+    public String scroll(@RequestParam  String scrollId, @RequestParam  Integer pageSize) {
         if (pageSize == null || pageSize <= 0) {
             return "please input query page num";
         }
@@ -85,7 +85,7 @@ public class ArticleAdvanceController {
             // 继续滚动
             searchHits = restTemplate.searchScrollContinue(scrollId, 60000, ArticleEntity.class, IndexCoordinates.of("article"));
         }
-        List<ArticleEntity> articles = searchHits.getSearchHits().stream().map(SearchHit::getContent).collect(Collectors.toList());
+        List<ArticleEntity> articles = searchHits.getSearchHits().stream().map(SearchHit::getContent).toList();
         if (articles.size() == 0) {
             // 结束滚动
             restTemplate.searchScrollClear(Collections.singletonList(scrollId));
