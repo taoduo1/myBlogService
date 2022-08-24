@@ -1,6 +1,6 @@
-package com.example.shop_product.otherinterfince.hystrix.service;
+package com.example.shop_product.otherinterfince.user.service;
 
-import com.example.shop_product.otherinterfince.hystrix.service.impl.UserGetWayServiceHystrix;
+import com.example.shop_product.otherinterfince.user.service.hystrix.UserGetWayServiceHystrix;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;

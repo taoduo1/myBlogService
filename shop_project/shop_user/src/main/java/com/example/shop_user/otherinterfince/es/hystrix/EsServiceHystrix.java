@@ -1,10 +1,10 @@
-package com.example.shop_es.service.impl;
+package com.example.shop_user.otherinterfince.es.hystrix;
 
 import com.example.shop_common.common.response.ActionResult;
 import com.example.shop_common.common.response.ErrorInfo;
 import com.example.shop_common.entity.es.ArticleEntity;
 import com.example.shop_common.utils.ResultUtil;
-import com.example.shop_es.service.EsService;
+import com.example.shop_user.otherinterfince.es.EsService;
 import org.springframework.stereotype.Service;
 
 /**

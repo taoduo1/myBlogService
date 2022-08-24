@@ -1,6 +1,6 @@
 package com.example.shop_product.service.impl;
 
-import com.example.shop_product.otherinterfince.hystrix.service.UserGetWayService;
+import com.example.shop_product.otherinterfince.user.service.UserGetWayService;
 import com.example.shop_product.service.UserService;
 import org.springframework.stereotype.Service;
 
