@@ -18,6 +18,7 @@
         <module>shop_product</module>
         <module>shop_getway</module>
         <module>shop_es</module>
+        <module>shop_file</module>
     </modules>
 
 

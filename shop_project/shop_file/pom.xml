@@ -8,15 +8,13 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>shop_product</artifactId>
+    <artifactId>shop_file</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>shop_product</name>
-    <description>shop_product</description>
+    <name>shop_file</name>
+    <description>shop_file</description>
     <properties>
         <java.version>17</java.version>
     </properties>
-
-
     <dependencies>
         <dependency>
             <groupId>com.example</groupId>

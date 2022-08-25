@@ -5,8 +5,6 @@ import com.example.shop_common.common.response.ActionResult;
 import com.example.shop_common.common.response.ErrorInfo;
 import com.example.shop_common.utils.DataUtil;
 import com.example.shop_common.utils.ResultUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -26,12 +24,12 @@ import java.util.List;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    /*private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);*/
     /**
      * 系统异常处理
      *
-     * @param e
-     * @return
+     * @param e ex
+     * @return ActionResult
      */
     @ExceptionHandler(Exception.class)
     @ResponseBody
@@ -60,8 +58,8 @@ public class GlobalExceptionHandler {
     /**
      * 自定义异常处理
      *
-     * @param e
-     * @return
+     * @param e ex
+     * @return ActionResult
      */
     @ExceptionHandler(CoreException.class)
     @ResponseBody
