@@ -12,9 +12,12 @@ import org.springframework.beans.BeanUtils;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -190,13 +193,18 @@ public class DataUtil {
         } else if (object instanceof String) {
             return (String) object;
         } else if (object instanceof Date) {
-            if (notNullOrEmpty(dateFormat)) return new SimpleDateFormat(dateFormat).format(object);
+            if (notNullOrEmpty(dateFormat)) {
+                return new SimpleDateFormat(dateFormat).format(object);
+            }
             return new SimpleDateFormat(dateFormat).format(DateUtil.YYYY_MM_DD_HH_MM_SS);
         } else if (object instanceof BigDecimal) { // BigDecimal情况下，对尾部的.00情况移除
             String string = String.valueOf(object);
-            while (string.contains(".") && StringUtils.endsWith(string, "0"))
+            while (string.contains(".") && StringUtils.endsWith(string, "0")) {
                 string = StringUtils.removeEnd(string, "0");
-            if (string.endsWith(".")) string = StringUtils.removeEnd(string, ".");
+            }
+            if (string.endsWith(".")) {
+                string = StringUtils.removeEnd(string, ".");
+            }
             return string;
         } else {
             return String.valueOf(object);
@@ -222,8 +230,12 @@ public class DataUtil {
      * @return the string
      */
     public static final String firstNotNullOrBlank(String... strings) {
-        if (strings == null) return null;
-        if (strings.length == 0) return null;
+        if (strings == null) {
+            return null;
+        }
+        if (strings.length == 0) {
+            return null;
+        }
         return Arrays.stream(strings).filter(DataUtil::notNullOrEmpty).findFirst().orElse(strings[strings.length - 1]);
     }
 
@@ -234,10 +246,18 @@ public class DataUtil {
      * @return the long
      */
     public static Long toLong(Object object) {
-        if (Objects.isNull(object)) return null;
-        if (object instanceof Long) return (Long) object;
-        if (object instanceof Integer) return Long.valueOf((Integer) object);
-        if (object instanceof String) return Long.parseLong((String) object);
+        if (Objects.isNull(object)) {
+            return null;
+        }
+        if (object instanceof Long) {
+            return (Long) object;
+        }
+        if (object instanceof Integer) {
+            return Long.valueOf((Integer) object);
+        }
+        if (object instanceof String) {
+            return Long.parseLong((String) object);
+        }
         return Long.parseLong(String.valueOf(object));
     }
 
@@ -248,10 +268,18 @@ public class DataUtil {
      * @return the integer
      */
     public static Integer toInteger(Object object) {
-        if (Objects.isNull(object)) return null;
-        if (object instanceof Integer) return (Integer) object;
-        if (object instanceof Long) return ((Long) object).intValue();
-        if (object instanceof String) return Double.valueOf((String) object).intValue();
+        if (Objects.isNull(object)) {
+            return null;
+        }
+        if (object instanceof Integer) {
+            return (Integer) object;
+        }
+        if (object instanceof Long) {
+            return ((Long) object).intValue();
+        }
+        if (object instanceof String) {
+            return Double.valueOf((String) object).intValue();
+        }
         return Integer.parseInt(String.valueOf(object));
     }
 
@@ -292,7 +320,9 @@ public class DataUtil {
      * @return 返回目标
      */
     public static <S, T> T cloneBean(S s, T t) {
-        if (s != null && t != null) BeanUtils.copyProperties(s, t); //
+        if (s != null && t != null) {
+            BeanUtils.copyProperties(s, t); //
+        }
         return t;
     }
 
@@ -304,9 +334,10 @@ public class DataUtil {
      * @return the s
      */
     public static <S> S cloneBean(S s) {
-        if (s == null) return null;
-        @SuppressWarnings("unchecked")
-        S result = (S) cloneBean(s, s.getClass());
+        if (s == null) {
+            return null;
+        }
+        @SuppressWarnings("unchecked") S result = (S) cloneBean(s, s.getClass());
         return result;
     }
 
@@ -320,16 +351,19 @@ public class DataUtil {
      * @return the t
      */
     public static <S, T> T cloneBean(S s, Class<T> clazzT) {
-        if (s == null) return null;
-        //
-        try {
-            T t = clazzT.newInstance();
-            cloneBean(s, t);
-            return t;
-        } catch (InstantiationException | IllegalAccessException e) {
-            LOGGER.error("", e);
+        if (s == null) {
             return null;
         }
+        //
+        try {
+            T t = clazzT.getDeclaredConstructor().newInstance();
+            cloneBean(s, t);
+            return t;
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+            LOGGER.error("", e);
+        }
+        return null;
     }
 
     /**
@@ -342,10 +376,16 @@ public class DataUtil {
      * @return the t
      */
     public static <S, T> T cloneBeanWithNonNullFields(S s, T t) {
-        if (t == null) return t;
-        if (s == null) return t;
+        if (t == null) {
+            return null;
+        }
+        if (s == null) {
+            return t;
+        }
         Set<Field> fields = getNonNullFields(s);
-        if (isNullOrEmpty(fields)) return t;
+        if (isNullOrEmpty(fields)) {
+            return t;
+        }
         //
         fields.stream().map(Field::getName).forEach(name -> {
             try {
@@ -401,9 +441,12 @@ public class DataUtil {
      * @return true, if successful
      */
     public static <T extends Comparable<T>> boolean equalsByStringNotNullOrEmpty(Object a, Object b) {
-        if (isNull(a) || isNull(b)) return false;
-        if (a instanceof String && isNullOrEmpty((String) a) || b instanceof String && isNullOrEmpty((String) b))
+        if (isNull(a) || isNull(b)) {
             return false;
+        }
+        if (a instanceof String && isNullOrEmpty((String) a) || b instanceof String && isNullOrEmpty((String) b)) {
+            return false;
+        }
         return Optional.ofNullable(toString(a)).map(e -> e.equals(toString(b))).orElse(false);
     }
 
@@ -417,9 +460,12 @@ public class DataUtil {
      * @return true, if successful
      */
     public static <T extends Comparable<T>> boolean equalsNotNullOrEmpty(T a, T b) {
-        if (isNull(a) || isNull(b)) return false;
-        if (a instanceof String && isNullOrEmpty((String) a) || b instanceof String && isNullOrEmpty((String) b))
+        if (isNull(a) || isNull(b)) {
             return false;
+        }
+        if (a instanceof String && isNullOrEmpty((String) a) || b instanceof String && isNullOrEmpty((String) b)) {
+            return false;
+        }
         return a.equals(b);
     }
 
@@ -431,10 +477,16 @@ public class DataUtil {
      * @return true, if successful
      */
     public static boolean equals(byte[] ary1, byte[] ary2) {
-        if (ary1 == null || ary2 == null) return false;
-        if (ary1.length != ary2.length) return false;
+        if (ary1 == null || ary2 == null) {
+            return false;
+        }
+        if (ary1.length != ary2.length) {
+            return false;
+        }
         for (int i = 0; i < ary2.length; i++) {
-            if (ary1[i] != ary2[i]) return false;
+            if (ary1[i] != ary2[i]) {
+                return false;
+            }
         }
         return true;
     }
@@ -460,8 +512,12 @@ public class DataUtil {
      * @return true, if successful
      */
     public static <T extends Comparable<T>> boolean notEquals(T v1, T v2) {
-        if (v1 == null && v2 == null) return false;
-        if (v1 == null || v2 == null) return true;
+        if (v1 == null && v2 == null) {
+            return false;
+        }
+        if (v1 == null || v2 == null) {
+            return true;
+        }
         return v1.compareTo(v2) != 0;
     }
 
@@ -476,7 +532,7 @@ public class DataUtil {
      */
     public static String toPercentageString(BigDecimal bigDecimal, int scale) {
         BigDecimal result = bigDecimal.multiply(BigDecimal.valueOf(100)).setScale(scale);
-        return result.toString() + "%";
+        return result + "%";
     }
 
     /**
@@ -513,7 +569,7 @@ public class DataUtil {
 
 
     /**
-     * Gets the val not null. 尝试获取对象的属性，为空判断返回nulldef值。
+     * Gets the val not null. 尝试获取对象的属性，为空判断返回 nullDef 值。
      * <pre>
      * Sample 没有使用该方法的代码:
      * DataUtils.notNull(n.getLdi()) ? n.getLdi().toPlainString() : null
@@ -522,14 +578,13 @@ public class DataUtil {
      *
      * </pre>
      *
-     * @param <T>     the generic type
-     * @param <R>     the generic type
-     * @param nulldef the nulldef
-     * @param getter  the getter
+     * @param <T>    the generic type
+     * @param <R>    the generic type
+     * @param getter the getter
      * @return the val not null
      */
-    public static <T, R> R getBeanProp(T bean, R nulldef, Function<T, R> getter) {
-        R result = nulldef;
+    public static <T, R> R getBeanProp(T bean, R nullDef, Function<T, R> getter) {
+        R result = nullDef;
         if (notNull(bean)) {
             R temp = getter.apply(bean);
             if (notNull(temp)) {
@@ -568,12 +623,12 @@ public class DataUtil {
      * Gets the val not null or empty. 尝试获取对象的属性，为空判断返回nulldef值。
      *
      * @param <T>     the generic type
-     * @param nulldef the nulldef
+     * @param nullDef the nullDef
      * @param getter  the getter
      * @return the val not null or empty
      */
-    public static <T> String getBeanProp(T bean, String nulldef, Function<T, String> getter) {
-        String result = nulldef;
+    public static <T> String getBeanProp(T bean, String nullDef, Function<T, String> getter) {
+        String result = nullDef;
         if (notNull(bean)) {
             String temp = getter.apply(bean);
             if (notNullOrEmpty(temp)) {
@@ -618,7 +673,9 @@ public class DataUtil {
      * @Date 2018/11/28 16:03
      */
     public static String removeStrRepeat(String str, String split) {
-        if (isNullOrEmpty(str)) return null;
+        if (isNullOrEmpty(str)) {
+            return null;
+        }
         return Arrays.stream(StringUtils.splitPreserveAllTokens(str, split)).collect(Collectors.toSet()).stream().collect(Collectors.joining(split));
     }
 
@@ -627,7 +684,9 @@ public class DataUtil {
     }
 
     private static Map<String, Object> objectAllToMap(Object obj, boolean withNull) {
-        if (obj == null) return null;
+        if (obj == null) {
+            return null;
+        }
 
         Map<String, Object> map = new HashMap<>();
 
@@ -637,7 +696,7 @@ public class DataUtil {
             for (PropertyDescriptor property : propertyDescriptors) {
                 String key = property.getName();
                 key = toLowerCaseFirstOne(key);
-                if (key.compareToIgnoreCase("class") == 0 || key.equals("extData")) {
+                if (key.compareToIgnoreCase("class") == 0 || "extData".equals(key)) {
                     continue;
                 }
                 Method getter = property.getReadMethod();
@@ -645,7 +704,9 @@ public class DataUtil {
                     continue;
                 }
                 Object value = getter.invoke(obj);
-                if (value != null || withNull) map.put(key, value);
+                if (value != null || withNull) {
+                    map.put(key, value);
+                }
             }
         } catch (Exception e) {
             LOGGER.error("对象转Map报错，抛出异常e：{}", e);
@@ -662,7 +723,9 @@ public class DataUtil {
      * @return
      */
     public static Map<String, Object> objectToMap(Object obj) {
-        if (obj == null) return Collections.emptyMap();
+        if (obj == null) {
+            return Collections.emptyMap();
+        }
         try {
             return JSONUtils.fromJSONString(JSONUtils.toJSONString(obj), Map.class);
         } catch (Exception e) {
@@ -683,15 +746,19 @@ public class DataUtil {
      * @Date 2018/12/6 19:44
      */
     public static <T> T mapToObject(Map<String, Object> map, Class<T> beanClass) {
-        if (map == null) return null;
+        if (map == null) {
+            return null;
+        }
         try {
-            T t = beanClass.newInstance();
+            T t = beanClass.getDeclaredConstructor().newInstance();
 
             BeanInfo beanInfo = Introspector.getBeanInfo(t.getClass());
             PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
             for (PropertyDescriptor property : propertyDescriptors) {
                 Method setter = property.getWriteMethod();
-                if (DataUtil.isNull(setter)) continue;
+                if (DataUtil.isNull(setter)) {
+                    continue;
+                }
 
                 Object obj = DataUtil.notNull(map.get(property.getName())) ? convertValType(setter, map.get(property.getName())) : null;
                 setter.invoke(t, obj);
@@ -713,7 +780,7 @@ public class DataUtil {
     private static Object convertValType(Method setter, Object value) {
         Object retVal = value;
         if ("java.util.Date".equals(setter.getParameterTypes()[0].getName())) {
-            retVal = DateUtil.format((Date) value,DateUtil.YYYY_MM_DD_HH_MM);
+            retVal = DateUtil.format((Date) value, DateUtil.YYYY_MM_DD_HH_MM);
         } else if ("java.lang.Integer".equals(setter.getParameterTypes()[0].getName())) {
             retVal = Integer.valueOf(value.toString());
         }
@@ -728,14 +795,22 @@ public class DataUtil {
      * @return the string
      */
     public static final String mergeStrings(String oldStrings, String newStrings) {
-        if (DataUtil.isNullOrEmpty(oldStrings) && DataUtil.isNullOrEmpty(newStrings)) return null;
-        if (DataUtil.isNullOrEmpty(oldStrings)) return newStrings;
-        if (DataUtil.isNullOrEmpty(newStrings)) return oldStrings;
+        if (DataUtil.isNullOrEmpty(oldStrings) && DataUtil.isNullOrEmpty(newStrings)) {
+            return null;
+        }
+        if (DataUtil.isNullOrEmpty(oldStrings)) {
+            return newStrings;
+        }
+        if (DataUtil.isNullOrEmpty(newStrings)) {
+            return oldStrings;
+        }
         //
         List<String> oldList = Arrays.stream(oldStrings.split(",")).collect(toList());
         List<String> newList = Arrays.stream(newStrings.split(",")).toList();
         newList.forEach(o -> {
-            if (!oldList.contains(o)) oldList.add(o);
+            if (!oldList.contains(o)) {
+                oldList.add(o);
+            }
         });
         return String.join(",", oldList);
     }
@@ -748,8 +823,12 @@ public class DataUtil {
      * @return the string
      */
     public static final String subStringToBizName(String name) {
-        if (name.contains("：")) name = StringUtils.substringBefore(name, "：");
-        if (name.contains(":")) name = StringUtils.substringBefore(name, ":");
+        if (name.contains("：")) {
+            name = StringUtils.substringBefore(name, "：");
+        }
+        if (name.contains(":")) {
+            name = StringUtils.substringBefore(name, ":");
+        }
         return name;
     }
 
@@ -762,17 +841,21 @@ public class DataUtil {
      * @return the string
      */
     public static final String holdOneDecimalPlace(String str, boolean needChage) {
-        if (DataUtil.isNullOrEmpty(str)) return null;
-        if (!needChage) return str;
+        if (DataUtil.isNullOrEmpty(str)) {
+            return null;
+        }
+        if (!needChage) {
+            return str;
+        }
         String xx = str.substring(str.length() - 1);
-        Number number = null;
+        Number number;
         try {
             number = NumberFormat.getInstance().parse(str);
         } catch (ParseException e) {
             return null;
         }
         String result = new BigDecimal(number.toString()).setScale(1, BigDecimal.ROUND_HALF_UP).toString();
-        if (xx.equals("%")) {
+        if ("%".equals(xx)) {
             result += xx;
         }
         return result;
@@ -802,7 +885,8 @@ public class DataUtil {
         if (DataUtil.isNullOrEmpty(data)) {
             return defaultData;
         }
-        Pattern pattern = Pattern.compile("([-]?\\d+\\.?\\d*).*");
+        String rule = "([-]?\\d+\\.?\\d*).*";
+        Pattern pattern = Pattern.compile(rule);
         Matcher matcher = pattern.matcher(data);
         if (!matcher.matches()) {
             return defaultData;
@@ -858,7 +942,9 @@ public class DataUtil {
      * @return the list
      */
     public static final List<String> convertContentToList(String content) {
-        if (content == null) return new ArrayList<String>();
+        if (content == null) {
+            return new ArrayList<String>();
+        }
         String[] tempAry = content.split(REGEXP_LINE_CRLF);
         return Arrays.stream(tempAry).collect(Collectors.toList());
     }
@@ -872,7 +958,9 @@ public class DataUtil {
      */
     public static final List<String> convertContentToList(String content, Predicate<String> predicate) {
         List<String> list = convertContentToList(content);
-        if (predicate != null) list = list.stream().filter(predicate).collect(Collectors.toList());
+        if (predicate != null) {
+            list = list.stream().filter(predicate).collect(Collectors.toList());
+        }
         return list;
     }
 
@@ -883,8 +971,7 @@ public class DataUtil {
      * @return the dataAuthMap
      */
     public static final Map<String, String> convertLinesToMap(List<String> lines) {
-        return lines.stream().map(String::trim).filter(s -> StringUtils.contains(s, CHR_EQUAL) && StringUtils.substringBefore(s, CHR_EQUAL).trim().matches(REGEXP_VAR_NAME))
-                .collect(Collectors.toMap(line -> StringUtils.substringBefore(line, CHR_EQUAL).trim(), line -> StringUtils.substringAfter(line, CHR_EQUAL).trim(), (o1, o2) -> o2));
+        return lines.stream().map(String::trim).filter(s -> StringUtils.contains(s, CHR_EQUAL) && StringUtils.substringBefore(s, CHR_EQUAL).trim().matches(REGEXP_VAR_NAME)).collect(Collectors.toMap(line -> StringUtils.substringBefore(line, CHR_EQUAL).trim(), line -> StringUtils.substringAfter(line, CHR_EQUAL).trim(), (o1, o2) -> o2));
     }
 
     /**
@@ -909,24 +996,28 @@ public class DataUtil {
      * @return
      */
     public static boolean anyMatch(String x, String... ary) {
-        if (ary == null) return false;
+        if (ary == null) {
+            return false;
+        }
         return Arrays.stream(ary).filter(Objects::nonNull).anyMatch(o -> o.equals(x));
     }
 
     //首字母转小写
     public static String toLowerCaseFirstOne(String s) {
-        if (Character.isLowerCase(s.charAt(0)))
+        if (Character.isLowerCase(s.charAt(0))) {
             return s;
-        else
+        } else {
             return (new StringBuilder()).append(Character.toLowerCase(s.charAt(0))).append(s.substring(1)).toString();
+        }
     }
 
     //首字母转大写
     public static String toUpperCaseFirstOne(String s) {
-        if (Character.isUpperCase(s.charAt(0)))
+        if (Character.isUpperCase(s.charAt(0))) {
             return s;
-        else
+        } else {
             return (new StringBuilder()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
+        }
     }
 
     public static Map<String, Field> getFieldAllToMap(Class c) {
@@ -953,8 +1044,7 @@ public class DataUtil {
      * @param <T>
      * @return
      */
-    public static <T> Map<Object, String> getEnumToMap(Class<T> enumT,
-                                                       String... methodNames) {
+    public static <T> Map<Object, String> getEnumToMap(Class<T> enumT, String... methodNames) {
         LinkedHashMap<Object, String> enummap = new LinkedHashMap<>();
         if (!enumT.isEnum()) {
             return enummap;
@@ -998,8 +1088,7 @@ public class DataUtil {
      * @param enumT
      * @return enum description
      */
-    public static <T> Object getEnumDescriotionByValue(Object code,
-                                                       Class<T> enumT, String... methodNames) {
+    public static <T> Object getEnumDescriotionByValue(Object code, Class<T> enumT, String... methodNames) {
         if (!enumT.isEnum()) { //不是枚举则返回""
             return "";
         }
@@ -1039,8 +1128,7 @@ public class DataUtil {
      * @param args
      * @return return value
      */
-    private static <T> Object getMethodValue(String methodName, T obj,
-                                             Object... args) {
+    private static <T> Object getMethodValue(String methodName, T obj, Object... args) {
         Object resut = "";
         try {
             Method[] methods = obj.getClass().getMethods(); //获取方法数组，这里只要共有的方法
@@ -1066,18 +1154,6 @@ public class DataUtil {
             e.printStackTrace();
         }
         return resut;
-    }
-
-    public String appendStr(String oriStr, String... appendStrs) {
-        if (appendStrs == null || appendStrs.length == 0) {
-            return oriStr;
-        }
-        StringBuilder stringBuilder = new StringBuilder(oriStr);
-        for (String appendStr : appendStrs) {
-            stringBuilder.append(appendStr);
-        }
-
-        return stringBuilder.toString();
     }
 
     public static boolean isValidId(Integer i) {
@@ -1113,7 +1189,6 @@ public class DataUtil {
         return obj;
     }
 
-
     /**
      * 获取map中第一个数据值
      *
@@ -1131,7 +1206,6 @@ public class DataUtil {
         return obj;
     }
 
-
     /**
      * 字符串重新排序
      * 针对 "456,123,789" =>"123,456,789"
@@ -1144,12 +1218,16 @@ public class DataUtil {
     }
 
     public static double toDouble(String s) {
-        if (isNullOrEmpty(s)) return 0;
+        if (isNullOrEmpty(s)) {
+            return 0;
+        }
         return Double.valueOf(s);
     }
 
     public static String toTrimStr(String s) {
-        if (s == null) return StringUtils.EMPTY;
+        if (s == null) {
+            return StringUtils.EMPTY;
+        }
         return s.trim();
     }
 
@@ -1187,7 +1265,9 @@ public class DataUtil {
     }
 
     public static BigDecimal toBig(String s) {
-        if (DataUtil.isNullOrEmpty(s)) return BigDecimal.ZERO;
+        if (DataUtil.isNullOrEmpty(s)) {
+            return BigDecimal.ZERO;
+        }
         return new BigDecimal(s);
     }
 
@@ -1200,14 +1280,16 @@ public class DataUtil {
             } else {
                 byte[] b;
                 try {
-                    b = Character.toString(c).getBytes("utf-8");
+                    b = Character.toString(c).getBytes(StandardCharsets.UTF_8);
                 } catch (Exception ex) {
                     System.out.println(ex);
                     b = new byte[0];
                 }
                 for (int j = 0; j < b.length; j++) {
                     int k = b[j];
-                    if (k < 0) k += 256;
+                    if (k < 0) {
+                        k += 256;
+                    }
                     stringBuffer.append("%" + Integer.toHexString(k).toUpperCase());
                 }
             }
@@ -1217,7 +1299,8 @@ public class DataUtil {
 
     /**
      * 字符串是否为N位小数
-     * @param str 字符串
+     *
+     * @param str     字符串
      * @param decimal 小数位
      * @return
      */
@@ -1225,22 +1308,22 @@ public class DataUtil {
         String[] ss = str.split("\\.");
         if (ss.length > 1) {
             String m = ss[1];
-            if (m.length()>decimal){
-                return false;
-            }
+            return m.length() <= decimal;
         }
         return true;
     }
 
     public static Object forOneSet(HashSet<Object> hashSet) {
-        if (DataUtil.isNullOrEmpty(hashSet)) return null;
+        if (DataUtil.isNullOrEmpty(hashSet)) {
+            return null;
+        }
         Iterator<Object> it = hashSet.iterator();
         return it.hasNext() ? it.next() : null;
     }
 
-
     /**
      * 字符串中unicode转中文，针对复杂字符串使用
+     *
      * @param theString
      * @return
      */
@@ -1248,7 +1331,7 @@ public class DataUtil {
         char aChar;
         int len = theString.length();
         StringBuffer outBuffer = new StringBuffer(len);
-        for (int x = 0; x < len;) {
+        for (int x = 0; x < len; ) {
             aChar = theString.charAt(x++);
             if (aChar == '\\') {
                 aChar = theString.charAt(x++);
@@ -1287,26 +1370,89 @@ public class DataUtil {
                                 value = (value << 4) + 10 + aChar - 'A';
                                 break;
                             default:
-                                throw new IllegalArgumentException(
-                                        "Malformed   \\uxxxx   encoding.");
+                                throw new IllegalArgumentException("Malformed   \\uxxxx   encoding.");
                         }
 
                     }
                     outBuffer.append((char) value);
                 } else {
-                    if (aChar == 't')
+                    if (aChar == 't') {
                         aChar = '\t';
-                    else if (aChar == 'r')
+                    } else if (aChar == 'r') {
                         aChar = '\r';
-                    else if (aChar == 'n')
+                    } else if (aChar == 'n') {
                         aChar = '\n';
-                    else if (aChar == 'f')
+                    } else if (aChar == 'f') {
                         aChar = '\f';
+                    }
                     outBuffer.append(aChar);
                 }
-            } else
+            } else {
                 outBuffer.append(aChar);
+            }
+
         }
         return outBuffer.toString();
     }
+
+    public String appendStr(String oriStr, String... appendStrs) {
+        if (appendStrs == null || appendStrs.length == 0) {
+            return oriStr;
+        }
+        StringBuilder stringBuilder = new StringBuilder(oriStr);
+        for (String appendStr : appendStrs) {
+            stringBuilder.append(appendStr);
+        }
+
+        return stringBuilder.toString();
+    }
+
+    // // 删除完文件后删除文件夹
+    // // param folderPath 文件夹完整绝对路径
+    public static void delFolder(String folderPath) {
+        try {
+            delAllFile(folderPath); // 删除完里面所有内容
+            //不想删除文佳夹隐藏下面
+            // String filePath = folderPath;
+            // filePath = filePath.toString();
+            // java.io.File myFilePath = new java.io.File(filePath);
+            // myFilePath.delete(); // 删除空文件夹
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 删除指定文件夹下所有文件
+    // param path 文件夹完整绝对路径
+    public static boolean delAllFile(String path) {
+        boolean flag = false;
+        File file = new File(path);
+        if (!file.exists()) {
+            return flag;
+        }
+        if (!file.isDirectory()) {
+            return flag;
+        }
+        String[] tempList = file.list();
+        File temp = null;
+        for (int i = 0; i < tempList.length; i++) {
+            if (path.endsWith(File.separator)) {
+                temp = new File(path + tempList[i]);
+            } else {
+                temp = new File(path + File.separator + tempList[i]);
+            }
+            if (temp.isFile()) {
+                temp.delete();
+            }
+            if (temp.isDirectory()) {
+                delAllFile(path + "/" + tempList[i]);// 先删除文件夹里面的文件
+                // delFolder(path + "/" + tempList[i]);// 再删除空文件夹
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
+
 }
+
