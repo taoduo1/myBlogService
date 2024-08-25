@@ -21,14 +21,15 @@ public class GlobalInterceptor implements HandlerInterceptor {
     private static final Logger logger = LoggerFactory.getLogger(GlobalInterceptor.class);
 
     private static final Set<String> ignoreUrlList = Sets.newHashSet(
-            "/api/user/user/login",
+            "/user/user/login",
             //swagger相关放行
-            "/swagger-ui.html",
+            "/swagger",
             "/webjars",
             "/configuration/ui",
             "/swagger-resources",
             "/v2/api-docs",
-            "/configuration/security"
+            "/configuration/security",
+            "/sendDirectMessage"
     );
 
 
@@ -36,8 +37,10 @@ public class GlobalInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
         logger.info("正在访问URI:{}", requestURI);
-        if (ignoreUrlList.contains(requestURI)) {
-            return true;
+        for (String s : ignoreUrlList) {
+            if (requestURI.contains(s)){
+                return true;
+            }
         }
         String token = request.getHeader("token");
         if (DataUtil.isNullOrEmpty(token)){

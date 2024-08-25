@@ -1,6 +1,6 @@
 package com.example.shop_es.controller;
 
-import com.example.shop_es.entity.ArticleEntity;
+import com.example.shop_common.entity.es.ArticleEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;

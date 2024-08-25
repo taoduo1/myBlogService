@@ -1,6 +1,6 @@
 package com.example.shop_es.service;
 
-import com.example.shop_es.entity.ArticleEntity;
+import com.example.shop_common.entity.es.ArticleEntity;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 /**

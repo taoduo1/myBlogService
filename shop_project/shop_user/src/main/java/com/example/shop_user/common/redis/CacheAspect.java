@@ -20,12 +20,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.SetOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -61,7 +69,7 @@ public class CacheAspect {
         Method method = methodSignature.getMethod();
 
         // 解析key(dataAuthMap:最后一位参数是二级key(map中的key)，除了最后一位都参与构建key， 其他)
-        String key = genKey(anno.key(),anno.enableMap() ?
+        String key = genKey(anno.key(), anno.enableMap() ?
                 Arrays.copyOf(pjp.getArgs(), pjp.getArgs().length - 1) : pjp.getArgs());
         Object result;
         String json;
@@ -116,8 +124,6 @@ public class CacheAspect {
             updateHashCache(key, result, anno.minutes());
         }
     }
-
-
 
 
     /**
@@ -245,7 +251,6 @@ public class CacheAspect {
 
         } else {
             redisTemplate.delete(key);
-
         }
     }
 }
