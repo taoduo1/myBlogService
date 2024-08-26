@@ -23,9 +23,6 @@ import com.example.shop_user.service.IUserService;
 import com.example.shop_user.util.MBeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -74,7 +71,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserMapper, User> implement
             String ipAddress = HttpUtils.getIP(httpRequest);
             setRegisterIp(ipAddress);
             setLevel(UserLevelEnum.LEVEL_ONE.getIndex());
-            setPassword(MD5Utils.getMD5Str(user.getPassword() + ipAddress));//注册ip为盐进行md5加密，达到每个用户拥有不同的盐的效果
+            setPassword(MD5Utils.getMD5Str(user.getPassword() + "_" + ipAddress));//注册ip为盐进行md5加密，达到每个用户拥有不同的盐的效果
             setTenantId(tenant.getId());
         }};
         save(newUser);
@@ -87,7 +84,8 @@ public class UserServiceImpl extends CrudServiceImpl<UserMapper, User> implement
         if (DataUtil.isNull(user)) {
             throw new CoreException(UserErrorEnum.USER_USERNAME_OR_PASSWORD_ERROR.getName());
         }
-        if (!user.getPassword().equals(MD5Utils.getMD5Str(loginUser.getPassword() + user.getRegisterIp()))) {
+        //密码认证
+        if (!user.getPassword().equals(MD5Utils.getMD5Str(loginUser.getPassword() + "_" + user.getRegisterIp()))) {
             throw new CoreException(UserErrorEnum.USER_USERNAME_OR_PASSWORD_ERROR.getName());
         }
         //用户登录成功，更新用户登录信息
@@ -95,11 +93,11 @@ public class UserServiceImpl extends CrudServiceImpl<UserMapper, User> implement
         user.setLastLoginIp(ipAddress);
         user.setLastLoginTime(new Date());
         save(user);
-        String token = MD5Utils.getMD5Str(user.getUsername());
+        //密码认证
+        String token = MD5Utils.getMD5Str(user.getUsername() + "_" + user.getLastLoginIp());
         //用户信息写入redis
         IUserService clazz = MBeanUtils.getBean(IUserService.class);
         clazz.setUserToken(token, user);
-        // TODO: 2022/8/2 用户权限写入
         return token;
     }
 

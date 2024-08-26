@@ -479,7 +479,7 @@ public class DateUtil {
      * @return the string
      * @Description: 时间差值计算，返回“xx天xx小时xx小时”或“xxdxxhxxm”格式
      * 按照国际化的形式，输出。
-     * @Author lubin
+     * @Author duo.tao
      * @Date 2018/7/23 13:53
      */
     public static String timesBetweenTwoDateBySeconds(Date dateFrom, Date dateTo) {

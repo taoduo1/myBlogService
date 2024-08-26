@@ -3,7 +3,6 @@ package com.example.shop_getway.components;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -13,6 +12,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,11 +30,12 @@ public class AuthorizeGatewayFilterFactory extends AbstractGatewayFilterFactory<
         super(Config.class);
     }
 
-    @Autowired
+    @Resource
     @Qualifier("stringRedisTemplate")
     private StringRedisTemplate redisTemplate;
 
     private List<String> ignoreUrI = Arrays.asList("/user/user/loginUser");
+
 
     @Override
     public GatewayFilter apply(Config config) {
@@ -50,7 +51,7 @@ public class AuthorizeGatewayFilterFactory extends AbstractGatewayFilterFactory<
                 response.setStatusCode(HttpStatus.UNAUTHORIZED);
                 return response.setComplete();
             }
-            if (StringUtils.isEmpty(redisTemplate.opsForValue().get("token:"+token ))) {
+            if (StringUtils.isEmpty(redisTemplate.opsForValue().get("token:"+token))) {
                 response.setStatusCode(HttpStatus.UNAUTHORIZED);
                 return response.setComplete();
             }

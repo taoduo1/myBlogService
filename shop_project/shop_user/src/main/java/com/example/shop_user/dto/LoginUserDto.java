@@ -7,6 +7,9 @@ import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * @author duo.tao
+ */
 @Data
 @Accessors(chain = true)
 @ApiModel(value="用户注册对象")

@@ -7,12 +7,12 @@ import com.example.shop_common.common.dto.CoreException;
 import com.example.shop_common.utils.DataUtil;
 import com.example.shop_user.entity.User;
 import com.example.shop_user.service.IUserService;
-import com.example.shop_user.util.MBeanUtils;
 import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Set;
@@ -21,7 +21,8 @@ public class GlobalInterceptor implements HandlerInterceptor {
     private static final Logger logger = LoggerFactory.getLogger(GlobalInterceptor.class);
 
     private static final Set<String> ignoreUrlList = Sets.newHashSet(
-            "/user/user/login",
+            "/user/user/loginUser",
+            "/user/user/createUser",
             //swagger相关放行
             "/swagger",
             "/webjars",
@@ -31,6 +32,8 @@ public class GlobalInterceptor implements HandlerInterceptor {
             "/configuration/security",
             "/sendDirectMessage"
     );
+    @Resource
+    private IUserService userService;
 
 
     @Override
@@ -46,7 +49,7 @@ public class GlobalInterceptor implements HandlerInterceptor {
         if (DataUtil.isNullOrEmpty(token)){
             throw new CoreException("请登陆！");
         }
-        User user = MBeanUtils.getBean(IUserService.class).getUserByToken(token);
+        User user = userService.getUserByToken(token);
         if (DataUtil.isNull(user)){
             throw new CoreException("登录失效，请重新登陆！");
         }
