@@ -42,9 +42,9 @@ public class CollectionUtils {
      * @return the diffent
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static Collection getDiffent(Collection collmax, Collection collmin) {
+    public static Collection<Object> getDiffent(Collection collmax, Collection collmin) {
         //使用LinkeList防止差异过大时,元素拷贝
-        Collection csReturn = new LinkedList();
+        Collection<Object> csReturn = new LinkedList<>();
         Collection max = collmax;
         Collection min = collmin;
         //先比较大小,这样会减少后续map的if判断次数
@@ -80,8 +80,8 @@ public class CollectionUtils {
      * @return the diffent no duplicate
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static Collection getDiffentNoDuplicate(Collection collmax, Collection collmin) {
-        return new HashSet(getDiffent(collmax, collmin));
+    public static Collection<Object> getDiffentNoDuplicate(Collection collmax, Collection collmin) {
+        return new HashSet<Object>(getDiffent(collmax, collmin));
     }
 
     /**
