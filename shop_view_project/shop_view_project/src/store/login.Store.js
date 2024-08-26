@@ -9,7 +9,7 @@ class LoginStore {
         makeAutoObservable(this);
     }
     getToken = async ({ username, password }) => {
-        const res = await http.post('/api/user/user/loginUser', {
+        const res = await http.post('/user-server/user/user/loginUser', {
             password: password,
             username: username
         })
