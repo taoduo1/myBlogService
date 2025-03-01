@@ -8,9 +8,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.servlet.http.HttpSession;
 
-
+/**
+ * @author duo.tao
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,7 +20,10 @@ public class UserContext {
     private int userId;
     private String userName;
     private Integer tenantId;
-    private String token = StringUtils.EMPTY;// 此次访问token
+    /**
+     * 此次访问token
+     */
+    private String token = StringUtils.EMPTY;
 
     @JsonIgnore
     public String getUserFlag() {
@@ -33,7 +37,7 @@ public class UserContext {
 
     @JsonIgnore
     public void genContext(Integer userId,String userName,Integer tenantId,String token) {
-        if (DataUtil.isNull(userId)) return;
+        if (DataUtil.isNull(userId)) {return;}
         this.setUserId(userId);
         this.setUserName(userName);
         this.setTenantId(tenantId);

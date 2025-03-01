@@ -76,5 +76,6 @@ public class User extends BaseTenantEntity {
     @ApiModelProperty(value = "登录次数")
     private Integer loginCount;
 
+    private TenantConfig tenantConfig;
 
 }

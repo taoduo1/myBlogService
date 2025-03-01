@@ -117,7 +117,7 @@ public class ChineseConvertUtils {
      */
     private static String delInvalidZero(String str) {
         if ("0".equals(str.substring(0, 1))) {
-            return delInvalidZero(str.substring(1, str.length()));
+            return delInvalidZero(str.substring(1));
         } else if (str.contains(",")) {
             return delInvalidZero(str.replaceAll(",", ""));
         } else {
@@ -126,6 +126,6 @@ public class ChineseConvertUtils {
     }
 
     public static void main(String[] args) {
-        System.out.println(ChineseConvertUtils.chinese("123456"));
+        System.out.println(1);
     }
 }

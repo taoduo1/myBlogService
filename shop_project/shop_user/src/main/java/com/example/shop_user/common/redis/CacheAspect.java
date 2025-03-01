@@ -60,7 +60,6 @@ public class CacheAspect {
      * @return the object
      * @throws Throwable the throwable
      */
-    // 在使用Cache注解的地方切入此切点
     @Around("@annotation(anno)")
     public Object handleCacheGet(ProceedingJoinPoint pjp, RedisCacheGet anno) throws Throwable {
         LOGGER.debug("缓存获取 {}", anno.key());

@@ -5,11 +5,15 @@ import com.example.shop_common.common.dto.CoreException;
 import com.example.shop_common.common.enums.user.TenantTypeEnum;
 import com.example.shop_common.common.service.CrudServiceImpl;
 import com.example.shop_common.utils.DataUtil;
+import com.example.shop_user.common.redis.RedissonUtil;
 import com.example.shop_user.dto.RegisterTenantDto;
 import com.example.shop_user.entity.Tenant;
 import com.example.shop_user.mapper.TenantMapper;
 import com.example.shop_user.service.ITenantService;
+import org.redisson.api.RLock;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * <p>
@@ -22,9 +26,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class TenantServiceImpl extends CrudServiceImpl<TenantMapper, Tenant> implements ITenantService {
 
+    @Resource
+    private RedissonUtil redissonUtil;
 
     @Override
     public void registerTenant(RegisterTenantDto tenantDto) {
+
         if (DataUtil.isNull(tenantDto.getTenantType()) || (TenantTypeEnum.USER_RULE_TENANT.notMatch(tenantDto.getTenantType()) && TenantTypeEnum.USER_REGISTER_TENANT.notMatch(tenantDto.getTenantType()) && TenantTypeEnum.USER_GROUP_TENANT.notMatch(tenantDto.getTenantType()))) {
             throw new CoreException("租户类型错误");
         }
@@ -40,10 +47,14 @@ public class TenantServiceImpl extends CrudServiceImpl<TenantMapper, Tenant> imp
         if (TenantTypeEnum.USER_GROUP_TENANT.match(tenantDto.getTenantType()) && countByCondition(new QueryWrapper<Tenant>().eq("code", tenantDto.getCode()).eq("type", TenantTypeEnum.USER_GROUP_TENANT.getIndex())) > 0) {
             throw new CoreException("该编号租户已存在");
         }
+        RLock clint = redissonUtil.getClint(tenantDto.getCode());
+        clint.lock();
+
         save(new Tenant() {{
             setCode(tenantDto.getCode());
             setName(tenantDto.getName());
             setType(tenantDto.getTenantType());
         }});
+        clint.unlock();
     }
 }

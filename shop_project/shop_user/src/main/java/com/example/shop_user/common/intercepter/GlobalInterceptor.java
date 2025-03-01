@@ -66,4 +66,13 @@ public class GlobalInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         SystemContext.clear();
     }
+
+    public static void main(String[] args) {
+        Thread thread = new Thread(() -> {
+            System.out.println(1);
+        });
+        thread.start();
+        thread.start();
+
+    }
 }

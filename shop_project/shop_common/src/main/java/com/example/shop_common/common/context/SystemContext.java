@@ -7,25 +7,25 @@ public class SystemContext {
      * springboot如未配置线程池数量，使用tomcat默认
      * https://www.jianshu.com/p/ac7ea422119e
      */
-    private static final InheritableThreadLocal<UserContext> userContext = new InheritableThreadLocal<>();
+    private static final InheritableThreadLocal<UserContext> USER_CONTEXT = new InheritableThreadLocal<>();
 //    private static ThreadLocal<UserContext> userContext = new ThreadLocal<>();
 
     public static UserContext getUserContext() {
-        if (userContext.get() == null) {
-            userContext.set(new UserContext());
+        if (USER_CONTEXT.get() == null) {
+            USER_CONTEXT.set(new UserContext());
         }
-        return userContext.get();
+        return USER_CONTEXT.get();
     }
 
     public static void setContext(UserContext context) {
-        userContext.set(context);
+        USER_CONTEXT.set(context);
     }
 
     public static void clear() {
-        if (userContext.get() != null) {
-            VisitTokenUtils.del(userContext.get().getToken());
+        if (USER_CONTEXT.get() != null) {
+            VisitTokenUtils.del(USER_CONTEXT.get().getToken());
         }
-        userContext.remove();
+        USER_CONTEXT.remove();
     }
 
 }
