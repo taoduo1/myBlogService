@@ -19,7 +19,7 @@
         <module>shop_getway</module>
         <module>shop_es</module>
         <module>shop_file</module>
-        <module>shop_task</module>
+        <module>shop_job</module>
     </modules>
 
 
