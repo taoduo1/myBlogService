@@ -13,16 +13,16 @@ public class ChineseConvertUtils {
     /**
      * 人民币大写单位制
      */
-    private static HashMap<Integer, String> dws;
+    private static final HashMap<Integer, String> dws;
 
     /**
      * 数字对应的中文
      */
-    private static String[] jes;
+    private static final String[] jes;
 
     // 初始化执行
     static {
-        dws = new HashMap<Integer, String>();
+        dws = new HashMap<>();
         dws.put(-2, "分");
         dws.put(-1, "角");
         dws.put(0, "元");
@@ -45,7 +45,6 @@ public class ChineseConvertUtils {
      * 数字转换人民币大写
      *
      * @param number 数字 不支持科学数字
-     * @return
      */
     public static String chinese(String number) {
         if ("0".equals(number)) {
@@ -54,7 +53,7 @@ public class ChineseConvertUtils {
         StringBuilder su = new StringBuilder();
         // 整数部分
         number = delInvalidZero(number);
-        String str = null;
+        String str;
         // 小数部分
         String decimal = null;
 
@@ -66,11 +65,11 @@ public class ChineseConvertUtils {
             str = number;
         }
         // 判断是否存在整数位
-        if (str.length() > 0) {
+        if (!str.isEmpty()) {
             for (int i = 0; i < str.length(); i++) {
                 String context = str.substring(i, i + 1);
                 int pow = str.length() - i - 1;
-                Integer val = Integer.parseInt(context.toString());
+                Integer val = Integer.parseInt(context);
                 // 获取中文单位
                 String sign = dws.get(pow);
                 // 获取中文数字
@@ -100,7 +99,7 @@ public class ChineseConvertUtils {
             if (decimal.length() == 2) {
                 str = decimal.substring(1, 2);
                 if (!"0".equals(str)) {
-                    su.append(jes[Integer.parseInt(str)] + dws.get(-2));
+                    su.append(jes[Integer.parseInt(str)]).append(dws.get(-2));
                 }
             }
         } else {
@@ -112,8 +111,6 @@ public class ChineseConvertUtils {
     /**
      * 清理数字特殊字符
      *
-     * @param str
-     * @return
      */
     private static String delInvalidZero(String str) {
         if ("0".equals(str.substring(0, 1))) {
