@@ -18,8 +18,8 @@ import com.example.shop_user.dto.RegisterUserDto;
 import com.example.shop_user.entity.Tenant;
 import com.example.shop_user.entity.User;
 import com.example.shop_user.mapper.UserMapper;
-import com.example.shop_user.service.ITenantService;
-import com.example.shop_user.service.IUserService;
+import com.example.shop_user.service.TenantService;
+import com.example.shop_user.service.UserService;
 import com.example.shop_user.util.MBeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,12 +39,12 @@ import java.util.Date;
  * @since 2022-06-13
  */
 @Service
-public class UserServiceImpl extends CrudServiceImpl<UserMapper, User> implements IUserService {
+public class UserServiceImpl extends CrudServiceImpl<UserMapper, User> implements UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Resource
-    private ITenantService tenantService;
+    private TenantService tenantService;
 
     @Override
     public User createNewUser(RegisterUserDto user, HttpServletRequest httpRequest) throws NoSuchAlgorithmException {
@@ -89,25 +89,25 @@ public class UserServiceImpl extends CrudServiceImpl<UserMapper, User> implement
             throw new CoreException(UserErrorEnum.USER_USERNAME_OR_PASSWORD_ERROR.getName());
         }
         //用户登录成功，更新用户登录信息
-        String ipAddress = HttpUtils.getIP(httpRequest);
+        String ipAddress = HttpUtils.getRealIp(httpRequest);
         user.setLastLoginIp(ipAddress);
         user.setLastLoginTime(new Date());
         save(user);
         //密码认证
         String token = MD5Utils.getMD5Str(user.getUsername() + "_" + user.getLastLoginIp());
         //用户信息写入redis
-        IUserService clazz = MBeanUtils.getBean(IUserService.class);
+        UserService clazz = MBeanUtils.getBean(UserService.class);
         clazz.setUserToken(token, user);
         return token;
     }
 
     @Override
     public void loginOut(String token) {
-        User user = MBeanUtils.getBean(IUserService.class).getUserByToken(token);
+        User user = MBeanUtils.getBean(UserService.class).getUserByToken(token);
         if (DataUtil.isNull(user)) {
             throw new CoreException(UserErrorEnum.USER_TOKEN_TIME_OUT.getName());
         }
-        MBeanUtils.getBean(IUserService.class).cleanUserTokenCache(token);
+        MBeanUtils.getBean(UserService.class).cleanUserTokenCache(token);
     }
 
 

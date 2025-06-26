@@ -1,5 +1,6 @@
 package com.example.shop_user.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.example.shop_common.entity.base.BaseTenantEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,6 +22,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @ApiModel(value="User对象", description="用户表")
+@TableName("user")
 public class User extends BaseTenantEntity {
 
     private static final long serialVersionUID = 1L;
@@ -75,7 +77,5 @@ public class User extends BaseTenantEntity {
 
     @ApiModelProperty(value = "登录次数")
     private Integer loginCount;
-
-    private TenantConfig tenantConfig;
 
 }

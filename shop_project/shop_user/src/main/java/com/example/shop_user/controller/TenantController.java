@@ -5,7 +5,7 @@ import com.example.shop_common.common.response.ActionResult;
 import com.example.shop_common.utils.ResultUtil;
 import com.example.shop_user.dto.RegisterTenantDto;
 import com.example.shop_user.entity.Tenant;
-import com.example.shop_user.service.ITenantService;
+import com.example.shop_user.service.TenantService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +29,7 @@ import javax.validation.Valid;
 public class TenantController {
 
     @Resource
-    private ITenantService tenantService;
+    private TenantService tenantService;
 
     @ApiOperation(value = "创建租户", notes = "创建租户接口")
     @PostMapping(value = "/registerTenant")

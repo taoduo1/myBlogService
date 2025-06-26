@@ -4,25 +4,26 @@ package com.example.shop_user.common.intercepter;
 import com.example.shop_common.common.context.SystemContext;
 import com.example.shop_common.common.context.UserContext;
 import com.example.shop_common.common.dto.CoreException;
+import com.example.shop_common.entity.base.ConfigTable;
 import com.example.shop_common.utils.DataUtil;
 import com.example.shop_user.entity.User;
-import com.example.shop_user.service.IUserService;
+import com.example.shop_user.service.ConfigTableService;
+import com.example.shop_user.service.UserService;
 import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Set;
-
+@Component
 public class GlobalInterceptor implements HandlerInterceptor {
     private static final Logger logger = LoggerFactory.getLogger(GlobalInterceptor.class);
 
     private static final Set<String> ignoreUrlList = Sets.newHashSet(
-            "/user/user/loginUser",
-            "/user/user/createUser",
             //swagger相关放行
             "/swagger",
             "/webjars",
@@ -30,10 +31,15 @@ public class GlobalInterceptor implements HandlerInterceptor {
             "/swagger-resources",
             "/v2/api-docs",
             "/configuration/security",
-            "/sendDirectMessage"
+            "/sendDirectMessage",
+            "/images",
+            "/error"
     );
-    @Resource
-    private IUserService userService;
+
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ConfigTableService configTableService;
 
 
     @Override
@@ -44,6 +50,10 @@ public class GlobalInterceptor implements HandlerInterceptor {
             if (requestURI.contains(s)){
                 return true;
             }
+        }
+        ConfigTable data = configTableService.getConfigKey("ignore_url","ignore_url");
+        if (DataUtil.notNullOrEmpty(data.getConfigValue()) && data.getConfigValue().contains(requestURI)){
+            return true;
         }
         String token = request.getHeader("token");
         if (DataUtil.isNullOrEmpty(token)){
@@ -65,14 +75,5 @@ public class GlobalInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         SystemContext.clear();
-    }
-
-    public static void main(String[] args) {
-        Thread thread = new Thread(() -> {
-            System.out.println(1);
-        });
-        thread.start();
-        thread.start();
-
     }
 }

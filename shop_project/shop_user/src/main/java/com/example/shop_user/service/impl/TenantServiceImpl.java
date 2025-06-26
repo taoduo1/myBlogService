@@ -8,7 +8,7 @@ import com.example.shop_common.utils.DataUtil;
 import com.example.shop_user.dto.RegisterTenantDto;
 import com.example.shop_user.entity.Tenant;
 import com.example.shop_user.mapper.TenantMapper;
-import com.example.shop_user.service.ITenantService;
+import com.example.shop_user.service.TenantService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
  * @since 2022-06-21
  */
 @Service
-public class TenantServiceImpl extends CrudServiceImpl<TenantMapper, Tenant> implements ITenantService {
+public class TenantServiceImpl extends CrudServiceImpl<TenantMapper, Tenant> implements TenantService {
 
 
     @Override

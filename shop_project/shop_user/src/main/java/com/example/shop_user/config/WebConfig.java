@@ -2,6 +2,7 @@ package com.example.shop_user.config;
 
 import com.example.shop_user.common.intercepter.GlobalInterceptor;
 import com.google.common.base.Predicates;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -33,13 +34,15 @@ import static springfox.documentation.builders.PathSelectors.ant;
 @EnableSwagger2
 public class WebConfig extends WebMvcConfigurationSupport {
 
+    @Autowired
+    private GlobalInterceptor globalInterceptor;
 
     /**
      * 注册拦截器
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new GlobalInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(globalInterceptor).addPathPatterns("/**");
     }
 
 

@@ -3,8 +3,7 @@ package com.example.shop_user.service.impl;
 import com.example.shop_common.common.service.CrudServiceImpl;
 import com.example.shop_user.entity.TenantConfig;
 import com.example.shop_user.mapper.TenantConfigMapper;
-import com.example.shop_user.service.ITenantConfigService;
-import org.springframework.boot.SpringBootVersion;
+import com.example.shop_user.service.TenantConfigService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,11 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2022-06-21
  */
 @Service
-public class TenantConfigServiceImpl extends CrudServiceImpl<TenantConfigMapper, TenantConfig> implements ITenantConfigService {
+public class TenantConfigServiceImpl extends CrudServiceImpl<TenantConfigMapper, TenantConfig> implements TenantConfigService {
 
-
-    public static void main(String[] args) {
-        String springVersion = SpringBootVersion.getVersion();
-        System.out.println("Spring version is: " + springVersion);
-    }
 }

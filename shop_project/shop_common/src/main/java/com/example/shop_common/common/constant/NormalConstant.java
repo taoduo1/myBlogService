@@ -9,7 +9,7 @@ public interface NormalConstant {
     //  用户密码 盐
     String SALT = "2wef65h#$%JVG<:}{>";
     String REDIS_TOKEN_KEY = "token";
-
+    String REDIS_CONFIG_KEY = "config";
 
     //
     String ADD = "+";

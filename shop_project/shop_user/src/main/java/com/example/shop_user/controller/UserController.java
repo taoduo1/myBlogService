@@ -6,14 +6,10 @@ import com.example.shop_common.utils.ResultUtil;
 import com.example.shop_user.dto.LoginUserDto;
 import com.example.shop_user.dto.RegisterUserDto;
 import com.example.shop_user.entity.User;
-import com.example.shop_user.service.IUserService;
+import com.example.shop_user.service.UserService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -28,12 +24,14 @@ import java.security.NoSuchAlgorithmException;
  * @author duo.tao
  * @since 2022-06-13
  */
+@Slf4j
 @RestController
 @RequestMapping("/user/user")
 public class UserController {
 
+
     @Resource
-    private IUserService userService;
+    private UserService userService;
 
     @ApiOperation(value = "新建用户-管理租户注册用户", notes = "新建用户-管理租户注册用户")
     @PostMapping(value = "/createUser")
@@ -51,6 +49,7 @@ public class UserController {
     @ApiOperation(value = "根据id获取某个用户", notes = "根据id获取某个用户")
     @GetMapping(value = "/findById/{id}")
     public ActionResult<User> findById(@PathVariable Integer id) {
+        log.info("获取用户{}",id);
         User data = userService.get(id);
         return ResultUtil.ok(data);
     }
