@@ -53,9 +53,8 @@ public interface CrudService<T> {
      * 删除.
      *
      * @param id the id
-     * @return the int
-     */
-	int delete(String id);
+	 */
+	void delete(Serializable id);
 
     /**
      * Upsert.

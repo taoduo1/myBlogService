@@ -3,7 +3,6 @@ package com.example.shop_common.common.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.example.shop_common.common.constant.NumberConstant;
 import com.example.shop_common.common.enums.common.BooleanEnum;
 import com.example.shop_common.common.mybatis.ExtBaseMapper;
 import com.example.shop_common.entity.base.BaseEntity;
@@ -29,6 +28,7 @@ public abstract class CrudServiceImpl<D extends ExtBaseMapper<T>, T extends Base
 
     @Override
     public int save(T entity) {
+        // todo 从线程变量中获取
         entity.setUpdateBy(0);
         entity.setUpdateTime(new Date());
         if (DataUtil.isNull(entity.getId())) {
@@ -62,13 +62,13 @@ public abstract class CrudServiceImpl<D extends ExtBaseMapper<T>, T extends Base
 
 
     @Override
-    public int delete(String id) {
+    public void delete(Serializable id) {
         T data = get(id);
         if (DataUtil.isNull(data)){
-            return NumberConstant.ZERO;
+            return;
         }
         data.setIsDeleted(BooleanEnum.TRUE.getIndex());
-        return save(data);
+        save(data);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.example.shop_user.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.shop_common.common.constant.NormalConstant;
 import com.example.shop_common.common.dto.CoreException;
+import com.example.shop_common.common.enums.common.BooleanEnum;
 import com.example.shop_common.common.enums.user.UserErrorEnum;
 import com.example.shop_common.common.enums.user.UserLevelEnum;
 import com.example.shop_common.common.service.CrudServiceImpl;
@@ -13,6 +14,7 @@ import com.example.shop_user.common.constant.UserConstant;
 import com.example.shop_user.common.redis.annotation.RedisCacheDelete;
 import com.example.shop_user.common.redis.annotation.RedisCacheGet;
 import com.example.shop_user.common.redis.annotation.RedisCachePut;
+import com.example.shop_user.dto.AuthResponse;
 import com.example.shop_user.dto.LoginUserDto;
 import com.example.shop_user.dto.RegisterUserDto;
 import com.example.shop_user.entity.Tenant;
@@ -79,7 +81,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserMapper, User> implement
     }
 
     @Override
-    public String loginUser(LoginUserDto loginUser, HttpServletRequest httpRequest) throws NoSuchAlgorithmException {
+    public AuthResponse loginUser(LoginUserDto loginUser, HttpServletRequest httpRequest) throws NoSuchAlgorithmException {
         User user = findOneByWrapper(new QueryWrapper<User>().eq("username", loginUser.getUsername()));
         if (DataUtil.isNull(user)) {
             throw new CoreException(UserErrorEnum.USER_USERNAME_OR_PASSWORD_ERROR.getName());
@@ -93,12 +95,20 @@ public class UserServiceImpl extends CrudServiceImpl<UserMapper, User> implement
         user.setLastLoginIp(ipAddress);
         user.setLastLoginTime(new Date());
         save(user);
-        //密码认证
-        String token = MD5Utils.getMD5Str(user.getUsername() + "_" + user.getLastLoginIp());
+
         //用户信息写入redis
         UserService clazz = MBeanUtils.getBean(UserService.class);
-        clazz.setUserToken(token, user);
-        return token;
+
+        String accessToken  = MD5Utils.getMD5Str(user.getUsername() + "_" + "accessToken");
+        String refreshToken  = MD5Utils.getMD5Str(user.getUsername() + "_" + "refreshToken");
+        String rememberToken = "";
+        if (BooleanEnum.TRUE.getStrCode().equals(loginUser.getRememberMe())){
+            rememberToken = MD5Utils.getMD5Str(user.getUsername() + "_" + "token");
+            clazz.setUserToken(rememberToken, user);
+        }
+        clazz.setUserToken(accessToken, user);
+        clazz.setUserToken(refreshToken, user);
+        return new AuthResponse(accessToken,refreshToken,rememberToken);
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.example.shop_product.service.impl;
 
+import com.example.shop_common.common.response.ActionResult;
 import com.example.shop_product.otherinterfince.user.service.UserGetWayService;
 import com.example.shop_product.service.UserService;
+import com.example.shop_product.thirdto.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,8 +20,8 @@ public class UserServiceImpl implements UserService {
     private UserGetWayService userService;
 
     @Override
-    public String getUserById(Integer id) {
-        String str = userService.getStr(id);
-        return str;
+    public ActionResult<User> getUserById(Integer id) {
+        ActionResult<User> user = userService.getStr(id);
+        return user;
     }
 }

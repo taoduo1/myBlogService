@@ -1,5 +1,6 @@
 package com.example.shop_user.util;
 
+import lombok.Getter;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 public class MBeanUtils implements ApplicationContextAware {
 
 
+    @Getter
     private static ApplicationContext applicationContext;
 
     @Override
@@ -21,10 +23,6 @@ public class MBeanUtils implements ApplicationContextAware {
         if (MBeanUtils.applicationContext == null) {
             MBeanUtils.applicationContext = applicationContext;
         }
-    }
-
-    public static ApplicationContext getApplicationContext() {
-        return applicationContext;
     }
 
     public static Object getBean(String name) {

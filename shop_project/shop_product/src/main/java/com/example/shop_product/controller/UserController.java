@@ -1,6 +1,11 @@
 package com.example.shop_product.controller;
 
+import com.example.shop_common.common.response.ActionResult;
 import com.example.shop_product.service.UserService;
+import com.example.shop_product.thirdto.User;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,9 +23,10 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    @RequestMapping("/getStr2")
-    public String getStr2(){
-        String str = userService.getUserById(1);
+    @ApiOperation(value = "根据id获取某个用户", notes = "根据id获取某个用户")
+    @GetMapping("/findById/{id}")
+    public ActionResult<User> findById(@PathVariable Integer id){
+        ActionResult<User> str = userService.getUserById(id);
         return str;
     }
 }

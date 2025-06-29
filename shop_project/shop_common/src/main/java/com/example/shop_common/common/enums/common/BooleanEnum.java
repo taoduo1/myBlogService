@@ -2,6 +2,7 @@ package com.example.shop_common.common.enums.common;
 
 import com.example.shop_common.common.enums.IIndex;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
@@ -10,14 +11,16 @@ import lombok.NoArgsConstructor;
  * @Author staton
  * @Date 2020/7/24 16:02
  */
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public enum BooleanEnum implements IIndex {
 
-    TRUE(1, "是"),
-    FALSE(0, "否");
+    TRUE(1, "1","是"),
+    FALSE(0, "0","否");
 
     private int code;
+    private String strCode;
     private String desc;
 
     public static String getByCode(Integer code) {
@@ -42,11 +45,8 @@ public enum BooleanEnum implements IIndex {
 
     @Override
     public int getIndex() {
-        return 0;
+        return code;
     }
 
-    public String getDesc() {
-        return desc;
-    }
 
 }

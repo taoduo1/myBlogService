@@ -3,6 +3,7 @@ package com.example.shop_user.controller;
 
 import com.example.shop_common.common.response.ActionResult;
 import com.example.shop_common.utils.ResultUtil;
+import com.example.shop_user.dto.AuthResponse;
 import com.example.shop_user.dto.LoginUserDto;
 import com.example.shop_user.dto.RegisterUserDto;
 import com.example.shop_user.entity.User;
@@ -29,7 +30,6 @@ import java.security.NoSuchAlgorithmException;
 @RequestMapping("/user/user")
 public class UserController {
 
-
     @Resource
     private UserService userService;
 
@@ -42,7 +42,7 @@ public class UserController {
 
     @ApiOperation(value = "用户登录", notes = "用户登录")
     @PostMapping(value = "/loginUser")
-    public ActionResult<String> loginUser(@Valid @RequestBody LoginUserDto loginUserDto, HttpServletRequest httpRequest) throws NoSuchAlgorithmException {
+    public ActionResult<AuthResponse> loginUser(@Valid @RequestBody LoginUserDto loginUserDto, HttpServletRequest httpRequest) throws NoSuchAlgorithmException {
         return ResultUtil.ok(userService.loginUser(loginUserDto,httpRequest));
     }
 

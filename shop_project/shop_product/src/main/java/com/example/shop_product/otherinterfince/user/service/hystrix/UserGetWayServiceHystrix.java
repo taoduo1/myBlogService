@@ -1,6 +1,8 @@
 package com.example.shop_product.otherinterfince.user.service.hystrix;
 
+import com.example.shop_common.common.response.ActionResult;
 import com.example.shop_product.otherinterfince.user.service.UserGetWayService;
+import com.example.shop_product.thirdto.User;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class UserGetWayServiceHystrix implements UserGetWayService {
 
     @Override
-    public String getStr(Integer id) {
-        return "hello, this message send failed ";
+    public ActionResult<User> getStr(Integer id) {
+        return null;
     }
 }

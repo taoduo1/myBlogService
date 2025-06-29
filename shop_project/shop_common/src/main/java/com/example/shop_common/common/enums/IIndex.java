@@ -15,12 +15,11 @@ public interface IIndex extends IToMap {
 
     /**
      * 当前枚举项的值（value）是否匹配传入参数。
-     * @param value
-     * @return
+     * @return true or false
      */
     default boolean match(Integer value) {
         if (Objects.isNull(value)) return false;
-        return value.intValue() == getIndex();
+        return value == getIndex();
     }
 
     /**

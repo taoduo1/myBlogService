@@ -23,5 +23,7 @@ public class LoginUserDto {
     @NotNull(message = "密码不能为空")
     private String password;
 
+    @ApiModelProperty(value = "记住我")
+    private String rememberMe;
 
 }

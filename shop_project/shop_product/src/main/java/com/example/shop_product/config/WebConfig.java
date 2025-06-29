@@ -1,8 +1,11 @@
 package com.example.shop_product.config;
 
+import com.example.shop_product.common.GlobalInterceptor;
 import com.google.common.base.Predicates;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -29,7 +32,38 @@ import static springfox.documentation.builders.PathSelectors.ant;
  */
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig extends WebMvcConfigurationSupport {
+public class WebConfig extends WebMvcConfigurationSupport {
+
+    @Autowired
+    private GlobalInterceptor globalInterceptor;
+
+    /**
+     * 注册拦截器
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(globalInterceptor).addPathPatterns("/**");
+    }
+
+
+    /**
+     * 配置放行swagger2的静态资源路径
+     *
+     */
+    @Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 解决静态资源无法访问
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/static/");
+        // 解决swagger无法访问
+        registry.addResourceHandler("/swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        // 解决swagger的js文件无法访问
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
+
+
     @Bean
     public Docket createRestApi() {
         //增加认证头
@@ -46,7 +80,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 .apiInfo(apiInfo())
                 .select()
                 //为当前包下controller生成API文档
-                .apis(RequestHandlerSelectors.basePackage("com.example.shop_user"))
+                .apis(RequestHandlerSelectors.basePackage("com.example.shop_product.controller"))
                 //为任何接口生成API文档
                 .apis(RequestHandlerSelectors.any())
                 .paths(Predicates.and(ant("/**"), Predicates.not(ant("/error")), Predicates.not(ant("/management/**")), Predicates.not(ant("/management*"))))
@@ -56,28 +90,10 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
     private ApiInfo apiInfo() {
         Contact contact = new Contact("陶铎", "null", "taoduo007wow@outlook.com");
         return new ApiInfoBuilder()
-                .title("my-project-user-api")
+                .title("my-project-product-api")
                 .description("我的用户項目接口")
                 .contact(contact)
                 .version("1.0")
                 .build();
-    }
-
-    /**
-     * 配置swagger2的静态资源路径
-     *
-     * @param registry
-     */
-    @Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 解决静态资源无法访问
-        registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/static/");
-        // 解决swagger无法访问
-        registry.addResourceHandler("/swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-        // 解决swagger的js文件无法访问
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 }

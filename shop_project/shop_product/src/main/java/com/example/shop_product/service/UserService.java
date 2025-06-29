@@ -1,5 +1,8 @@
 package com.example.shop_product.service;
 
+import com.example.shop_common.common.response.ActionResult;
+import com.example.shop_product.thirdto.User;
+
 /**
  * @author duo.tao
  * @Description:
@@ -7,5 +10,5 @@ package com.example.shop_product.service;
  */
 public interface UserService {
 
-    String getUserById(Integer id);
+    ActionResult<User> getUserById(Integer id);
 }
