@@ -9,7 +9,7 @@ package com.example.shop_common.common.response;
 public enum Status {
 
     // 公共
-    SUCCESS(2000, "成功"),
+    SUCCESS(200, "成功"),
     UNKNOWN_ERROR(9998,"未知异常"),
     SYSTEM_ERROR(9999, "系统异常"),
 
@@ -28,8 +28,8 @@ public enum Status {
     LOGIN_USER_NOT_EXIST(2006, "该用户不存在"),
     LOGIN_USER_EXIST(2007, "该用户已存在");
 
-    public int code;
-    public String message;
+    public final int code;
+    public final String message;
 
     Status(int code, String message) {
         this.code = code;

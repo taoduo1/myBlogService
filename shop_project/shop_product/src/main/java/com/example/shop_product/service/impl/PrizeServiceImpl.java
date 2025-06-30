@@ -7,6 +7,7 @@ import com.example.shop_product.entity.Prize;
 import com.example.shop_product.entity.dto.PrizeDto;
 import com.example.shop_product.mapper.PrizeMapper;
 import com.example.shop_product.service.PrizeService;
+import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  * @author duo.tao
  * @since 2025-06-29
  */
+@Slf4j
 @Service
 public class PrizeServiceImpl extends CrudServiceImpl<PrizeMapper, Prize> implements PrizeService {
 
@@ -59,6 +61,7 @@ public class PrizeServiceImpl extends CrudServiceImpl<PrizeMapper, Prize> implem
 
     @Override
     public void initPrizes(PrizeDto prizeDto) {
+        // 活动时间也存入redis
         List<Prize> prizes = dao.selectList(new QueryWrapper<Prize>().eq("group_id", prizeDto.getGroupId()));
         // 使用Hash结构存储奖品信息
         Map<String, String> prizeMap = prizes.stream().collect(Collectors.toMap(p -> p.getId().toString(), JSONUtils::toJSONString));
@@ -72,6 +75,7 @@ public class PrizeServiceImpl extends CrudServiceImpl<PrizeMapper, Prize> implem
 
     @Override
     public Prize drawPrizes(PrizeDto prizeDto) {
+        // TODO 设置抽奖活动时间判断 lua脚本还有问题，后续要写lua脚本
         // 1. 获取全局锁防止并发问题
         RLock lock = redissonClient.getLock(LOCK_KEY + prizeDto.getGroupId());
         try {
@@ -109,6 +113,7 @@ public class PrizeServiceImpl extends CrudServiceImpl<PrizeMapper, Prize> implem
                    local userId = ARGV[1]
                    local groupId = ARGV[2]
                 -- 1. 获取所有奖品
+                  redis.log(redis.LOG_NOTICE, "-- 开始抽奖操作 ：gameId,userId,maxGoal=" .. KEYS[1] .. ',' .. ARGV[1] .. ',' .. ARGV[2])
                   local prizes = redis.call('HGETALL', prizePoolKey)
                   local availablePrizes = {}
                   local totalProbability = 0
