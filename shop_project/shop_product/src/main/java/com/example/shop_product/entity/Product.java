@@ -37,7 +37,7 @@ public class Product extends BaseEntity {
     private String spec;
 
     @ApiModelProperty(value = "可选规格")
-    private String size;
+    private String productSize;
 
     @ApiModelProperty(value = "商品描述")
     private String description;

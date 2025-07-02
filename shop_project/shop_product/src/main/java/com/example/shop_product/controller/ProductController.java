@@ -1,9 +1,11 @@
 package com.example.shop_product.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.shop_common.common.response.ActionResult;
 import com.example.shop_common.utils.ResultUtil;
 import com.example.shop_product.entity.Product;
+import com.example.shop_product.entity.dto.ProductPageDto;
 import com.example.shop_product.service.ProductService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +36,7 @@ public class ProductController {
         return ResultUtil.ok(prizeService.saveProduct(product));
     }
 
-    @ApiOperation(value = "根据id获取某个用户", notes = "根据id获取某个用户")
+    @ApiOperation(value = "根据id获取某个商品", notes = "根据id获取某个商品")
     @PostMapping("/deleteById")
     public ActionResult<Void> deleteById(@Valid @RequestBody Product product){
         prizeService.delete(product.getId());
@@ -47,14 +49,21 @@ public class ProductController {
         return ResultUtil.ok(prizeService.saveProduct(product));
     }
 
-    @ApiOperation(value = "根据id获取某个用户", notes = "根据id获取某个用户")
+    @ApiOperation(value = "根据id获取某个商品", notes = "根据id获取某个商品")
     @GetMapping("/findById/{id}")
     public ActionResult<Product> findById(@PathVariable Integer id){
         Product product = prizeService.get(id);
         return ResultUtil.ok(product);
     }
 
-    @ApiOperation(value = "获取排行榜", notes = "获取排行榜")
+    @ApiOperation(value = "返回商品分页列表", notes = "返回商品分页列表")
+    @PostMapping("/findListByPage")
+    public ActionResult<IPage<Product>> findListByPage(@Valid @RequestBody ProductPageDto page){
+        return ResultUtil.ok(prizeService.findListByPage(page));
+    }
+
+
+    @ApiOperation(value = "获取搜索排行榜-从大到小", notes = "获取排行榜")
     @GetMapping("/top/{count}")
     public ActionResult<List<String>> getTopProducts(@PathVariable int count) {
         return ResultUtil.ok(prizeService.getTopProducts(count));
