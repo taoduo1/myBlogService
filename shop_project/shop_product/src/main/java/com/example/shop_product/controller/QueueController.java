@@ -19,6 +19,7 @@ import javax.validation.Valid;
 @RequestMapping("/product/queue")
 public class QueueController {
 
+
     @ApiOperation(value = "商品下单", notes = "商品下单点对点")
     @PostMapping("/saveProduct")
     public ActionResult<Product> saveProduct(@Valid @RequestBody Product product){
@@ -36,6 +37,7 @@ public class QueueController {
     public ActionResult<Product> noticeUser(@Valid @RequestBody Product product){
         return ResultUtil.ok();
     }
+
     @ApiOperation(value = "通知多个服务", notes = "通知多个服务-通配符模式")
     @PostMapping("/noticeAll")
     public ActionResult<Product> noticeAll(@Valid @RequestBody Product product){

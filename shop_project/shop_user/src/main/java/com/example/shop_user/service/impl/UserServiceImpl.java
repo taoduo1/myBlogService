@@ -9,6 +9,7 @@ import com.example.shop_common.common.enums.user.UserLevelEnum;
 import com.example.shop_common.common.service.CrudServiceImpl;
 import com.example.shop_common.utils.DataUtil;
 import com.example.shop_common.utils.HttpUtils;
+import com.example.shop_common.utils.JSONUtils;
 import com.example.shop_common.utils.MD5Utils;
 import com.example.shop_user.common.constant.UserConstant;
 import com.example.shop_user.common.redis.annotation.RedisCacheDelete;
@@ -21,6 +22,7 @@ import com.example.shop_user.entity.Tenant;
 import com.example.shop_user.entity.User;
 import com.example.shop_user.mapper.UserMapper;
 import com.example.shop_user.service.TenantService;
+import com.example.shop_user.service.UserMessageProducerService;
 import com.example.shop_user.service.UserService;
 import com.example.shop_user.util.MBeanUtils;
 import org.slf4j.Logger;
@@ -45,8 +47,13 @@ public class UserServiceImpl extends CrudServiceImpl<UserMapper, User> implement
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
+
+
     @Resource
     private TenantService tenantService;
+
+    @Resource
+    private UserMessageProducerService userMessageProducerService;
 
     @Override
     public User createNewUser(RegisterUserDto user, HttpServletRequest httpRequest) throws NoSuchAlgorithmException {
@@ -108,6 +115,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserMapper, User> implement
         }
         clazz.setUserToken(accessToken, user);
         clazz.setUserToken(refreshToken, user);
+        userMessageProducerService.sendByRouting("routing.key.ALL",JSONUtils.toJSONString(user));
         return new AuthResponse(accessToken,refreshToken,rememberToken);
     }
 
