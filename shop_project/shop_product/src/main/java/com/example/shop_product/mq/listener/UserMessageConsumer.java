@@ -19,18 +19,6 @@ import java.io.IOException;
 @Component
 public class UserMessageConsumer {
 
-//    /**
-//     * 点对点模式 监听指定队列（自动确认模式）
-//     * @param message 接收的消息内容
-//     */
-////    @RabbitListener(queues = "UserDirectQueue")
-////    public void receiveUserMessage(Object message) {
-////        System.out.println("收到消息: " + message.toString());
-////
-////        // 这里处理业务逻辑
-////        // processMessage(message);
-////    }
-
     /**
      * 点对点模式 手动确认模式（需在application.yml配置acknowledge-mode: manual）
      */

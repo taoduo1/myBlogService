@@ -115,7 +115,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserMapper, User> implement
         }
         clazz.setUserToken(accessToken, user);
         clazz.setUserToken(refreshToken, user);
-        userMessageProducerService.sendByRouting("routing.key.ALL",JSONUtils.toJSONString(user));
+        userMessageProducerService.sendWithConfirm("routing.key.ALL",JSONUtils.toJSONString(user));
         return new AuthResponse(accessToken,refreshToken,rememberToken);
     }
 

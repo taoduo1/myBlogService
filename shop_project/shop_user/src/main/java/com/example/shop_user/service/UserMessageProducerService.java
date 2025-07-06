@@ -27,4 +27,7 @@ public interface UserMessageProducerService {
      * @param message 消息
      */
     void sendByRouting(String routingKey, String message);
+
+
+    void sendWithConfirm( String routingKey, Object message);
 }

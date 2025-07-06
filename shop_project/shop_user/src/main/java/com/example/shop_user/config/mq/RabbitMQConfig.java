@@ -1,6 +1,11 @@
-package com.example.shop_user.config;
+package com.example.shop_user.config.mq;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
+
+    private static final Logger logger = LoggerFactory.getLogger(RabbitMQConfig.class);
 
     //队列 起名：UserDirectQueue
     @Bean
@@ -54,9 +61,6 @@ public class RabbitMQConfig {
     Binding bindingWorkQueue() {
         return BindingBuilder.bind(WorkQueue()).to(WorkExchange()).with("WorkDirectRouting");
     }
-
-
-
 
     // 发布订阅模式配置（Fanout Exchange）
     @Bean
@@ -121,5 +125,33 @@ public class RabbitMQConfig {
                 //.to(routingExchange()) //精确模式
                 .to(topicExchange()) //主题模式
                 .with("routing.key.*");
+    }
+
+
+    @Bean
+    public ConnectionFactory connectionFactory() {
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory("localhost");
+        // 必须设置以下两个属性
+        connectionFactory.setPublisherReturns(true);  // 开启返回模式
+        connectionFactory.setPublisherConfirmType(CachingConnectionFactory.ConfirmType.CORRELATED);
+        return connectionFactory;
+    }
+
+    @Bean
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
+            if (ack) {
+                System.out.println("消息发送成功：" + correlationData);
+            } else {
+                System.out.println("消息发送失败：" + cause);
+            }
+        });
+        // 如果要设置Mandatory（确认消息路由到队列）回调，可以设置如下（注意：这需要设置publisherReturns为true）
+         rabbitTemplate.setMandatory(true);
+         rabbitTemplate.setReturnsCallback(returned -> {
+             System.out.println("消息被退回：" + returned);
+         });
+        return rabbitTemplate;
     }
 }
