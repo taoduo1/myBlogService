@@ -56,12 +56,14 @@ public class ProductServiceImpl extends CrudServiceImpl<ProductMapper, Product> 
     }
 
     @Override
-    public IPage<Product> findListByPage(ProductPageDto page) {
+    public IPage<Product> findListByPage(ProductPageDto dto) {
+        Page<Product> page = new Page<>(dto.getCurrent(), dto.getSize());
         QueryWrapper<Product> wrapper = new QueryWrapper<>();
-        if (DataUtil.notNullOrEmpty(page.getDescription())){
-            wrapper.eq("description",page.getDescription());
+        if (DataUtil.notNullOrEmpty(dto.getName())){
+            wrapper.like("name",dto.getName());
         }
-        return dao.selectPage(page, wrapper);
+        IPage<Product> data = dao.selectPage(page, wrapper);
+        return data;
     }
 
 }

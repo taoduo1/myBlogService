@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author duo.tao
@@ -152,14 +151,7 @@ public abstract class CrudServiceImpl<D extends ExtBaseMapper<T>, T extends Base
     }
 
 
-    /**
-     * selectPage
-     */
-    @Override
-    public IPage<Map<String, Object>> selectMapsPage(IPage<T> page, QueryWrapper<T> wrapper) {
-        wrapper.eq("is_deleted",BooleanEnum.FALSE.getIndex());
-        return dao.selectMapsPage(page, wrapper);
-    }
+
 
 
 }

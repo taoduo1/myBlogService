@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -115,5 +114,5 @@ public interface CrudService<T> {
 
 	IPage<T> selectPage(IPage<T> page,QueryWrapper<T> wrapper);
 
-	IPage<Map<String, Object>> selectMapsPage(IPage<T> page, QueryWrapper<T> wrapper);
+
 }
