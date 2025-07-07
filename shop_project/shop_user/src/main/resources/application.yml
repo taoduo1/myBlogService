@@ -1,0 +1,7 @@
+spring:
+  drools:
+    enabled: true
+    auto-update: true  # 开启热加载
+    file-scanner:
+      enabled: true
+      interval: 10s    # 每10秒检查规则变更

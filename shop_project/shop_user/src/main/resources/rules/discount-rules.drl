@@ -1,0 +1,26 @@
+package com.example.shop_user.rules
+
+import com.example.shop_user.dto.Order
+import com.example.shop_user.dto.RuleResult
+import java.math.BigDecimal
+
+rule "VIP"
+    when
+        $order: Order(customerType == "VIP", amount > 1000)
+    then
+        $order.setDiscount(new BigDecimal("0.15"));
+        insert(new RuleResult("VIP", new BigDecimal("0.15")));
+
+end
+
+rule "Normal"
+    when
+        $order: Order(customerType == "NORMAL", amount > 500)
+    then
+        $order.setDiscount(new BigDecimal("0.05"));
+        insert(new RuleResult("Normal", new BigDecimal("0.05")));
+end
+
+query "DiscountResults"
+    $result: RuleResult()
+end
