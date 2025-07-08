@@ -1,16 +1,28 @@
-package com.example.shop_user.rules
+package rules
 
 import com.example.shop_user.dto.Order
 import com.example.shop_user.dto.RuleResult
 import java.math.BigDecimal
+global org.slf4j.Logger logger
 
 rule "VIP"
     when
         $order: Order(customerType == "VIP", amount > 1000)
     then
         $order.setDiscount(new BigDecimal("0.15"));
+        logger.info("执行到VIP");
         insert(new RuleResult("VIP", new BigDecimal("0.15")));
+end
 
+rule "NULL_TYPE"
+    when
+        $order: Order(customerType == null, amount > 1000)
+    then
+        $order.setDiscount(new BigDecimal("0.15"));
+        logger.info("执行到NULL_TYPE");
+        $order.setCustomerType("VIP");
+        update($order)
+        insert(new RuleResult("NULL_TYPE", new BigDecimal("0.2")));
 end
 
 rule "Normal"

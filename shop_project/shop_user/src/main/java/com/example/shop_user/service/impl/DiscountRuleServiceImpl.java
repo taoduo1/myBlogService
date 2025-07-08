@@ -3,18 +3,20 @@ package com.example.shop_user.service.impl;
 import com.example.shop_user.dto.Order;
 import com.example.shop_user.dto.RuleResult;
 import com.example.shop_user.service.DiscountRuleService;
-import org.drools.core.time.SessionPseudoClock;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.KieSessionConfiguration;
 import org.kie.api.runtime.conf.ClockTypeOption;
 import org.kie.api.runtime.rule.QueryResults;
+import org.kie.api.time.SessionPseudoClock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class DiscountRuleServiceImpl implements DiscountRuleService {
@@ -40,7 +42,7 @@ public class DiscountRuleServiceImpl implements DiscountRuleService {
             SessionPseudoClock clock = kieSession.getSessionClock();
 
             // 设置全局变量
-            //kieSession.setGlobal("logger", logger);
+            kieSession.setGlobal("logger",  LoggerFactory.getLogger(this.getClass()));
 
             // 插入事实
             kieSession.insert(order);
@@ -52,7 +54,12 @@ public class DiscountRuleServiceImpl implements DiscountRuleService {
             // 获取规则结果
             QueryResults results = kieSession.getQueryResults("DiscountResults");
             if (results.size() <= 0) return null;
-            return (RuleResult) results.iterator().next().get("$result");
+            List<RuleResult> resultList = new ArrayList<>();
+            results.forEach(o->{
+                RuleResult data = (RuleResult) o.get("$result");
+                resultList.add(data);
+            });
+            return resultList.get(0);
         } finally {
             kieSession.dispose();
         }
