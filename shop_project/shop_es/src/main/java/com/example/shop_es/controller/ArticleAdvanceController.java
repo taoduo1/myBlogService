@@ -52,9 +52,9 @@ public class ArticleAdvanceController {
         // 方法1
         SearchHits<ArticleEntity> search1 = restTemplate.search(query, ArticleEntity.class);
         // 方法2
-         SearchHits<ArticleEntity> search2 = operations.search(query, ArticleEntity.class);
+        // SearchHits<ArticleEntity> search2 = operations.search(query, ArticleEntity.class);
         List<ArticleEntity> articles1 = search1.getSearchHits().stream().map(SearchHit::getContent).toList();
-        List<ArticleEntity> articles2 = search2.getSearchHits().stream().map(SearchHit::getContent).toList();
+        //List<ArticleEntity> articles2 = search2.getSearchHits().stream().map(SearchHit::getContent).toList();
         return articles1.toString();
     }
 

@@ -38,15 +38,6 @@ rule "Normal"
         insert(new RuleResult("Normal", new BigDecimal("0.05")));
 end
 
-rule "Normal"
-    when
-        $order: Order(customerType == "NORMAL", amount > 500)
-        $user:User(this == userService.get($order.userId)) from userService.get($order.userId)
-    then
-        $order.setDiscount(new BigDecimal("0.05"));
-        insert(new RuleResult("Normal", new BigDecimal("0.05")));
-end
-
 query "DiscountResults"
     $result: RuleResult()
 end
