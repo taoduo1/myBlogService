@@ -50,13 +50,13 @@ public class ArticleAdvanceController {
     public String queryPage(@RequestParam int pageNum, @RequestParam int pageSize) {
         NativeSearchQuery query = new NativeSearchQuery(new BoolQueryBuilder());
         query.setPageable(PageRequest.of(pageNum, pageSize));
-
         // 方法1
-        SearchHits<ArticleEntity> search = restTemplate.search(query, ArticleEntity.class);
+        SearchHits<ArticleEntity> search1 = restTemplate.search(query, ArticleEntity.class);
         // 方法2
-        // SearchHits<ArticleEntity> search = operations.search(query, ArticleEntity.class);
-        List<ArticleEntity> articles = search.getSearchHits().stream().map(SearchHit::getContent).collect(Collectors.toList());
-        return articles.toString();
+         SearchHits<ArticleEntity> search2 = operations.search(query, ArticleEntity.class);
+        List<ArticleEntity> articles1 = search1.getSearchHits().stream().map(SearchHit::getContent).toList();
+        List<ArticleEntity> articles2 = search2.getSearchHits().stream().map(SearchHit::getContent).toList();
+        return articles1.toString();
     }
 
     /**
@@ -86,7 +86,7 @@ public class ArticleAdvanceController {
             searchHits = restTemplate.searchScrollContinue(scrollId, 60000, ArticleEntity.class, IndexCoordinates.of("article"));
         }
         List<ArticleEntity> articles = searchHits.getSearchHits().stream().map(SearchHit::getContent).toList();
-        if (articles.size() == 0) {
+        if (articles.isEmpty()) {
             // 结束滚动
             restTemplate.searchScrollClear(Collections.singletonList(scrollId));
             scrollId = null;

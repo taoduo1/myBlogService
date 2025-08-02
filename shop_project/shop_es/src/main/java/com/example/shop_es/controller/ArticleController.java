@@ -47,12 +47,11 @@ public class ArticleController {
     /**
      * 保存文档信息
      *
-     * @param data 文档详情
+     * @param article 文档详情
      * @return 保存的文档信息
      */
     @PostMapping("/saveArticle")
-    public ActionResult<String> saveArticle(@RequestBody String  data) {
-        ArticleEntity article = JSONUtils.fromJSONString(data,ArticleEntity.class);
+    public ActionResult<String> saveArticle(@RequestBody ArticleEntity  article) {
         if (DataUtil.isNull(article)){
             return ResultUtil.fail(new ErrorInfo("数据转换失败，请检查！"));
         }

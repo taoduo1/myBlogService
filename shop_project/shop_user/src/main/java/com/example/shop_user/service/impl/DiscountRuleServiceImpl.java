@@ -2,7 +2,9 @@ package com.example.shop_user.service.impl;
 
 import com.example.shop_user.dto.Order;
 import com.example.shop_user.dto.RuleResult;
+import com.example.shop_user.entity.User;
 import com.example.shop_user.service.DiscountRuleService;
+import com.example.shop_user.service.UserService;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -25,6 +27,8 @@ public class DiscountRuleServiceImpl implements DiscountRuleService {
 
     @Resource
     private KieContainer kieContainer;
+    @Resource
+    private UserService userService;
 
 
     @Override
@@ -36,18 +40,15 @@ public class DiscountRuleServiceImpl implements DiscountRuleService {
 
         // 2. 创建带配置的KieSession
         KieSession kieSession = kieContainer.newKieSession(config);
-
         try {
             // 3. 安全获取伪时钟（不再需要强制转换）
             SessionPseudoClock clock = kieSession.getSessionClock();
-
             // 设置全局变量
+            kieSession.setGlobal("userService",userService);
             kieSession.setGlobal("logger",  LoggerFactory.getLogger(this.getClass()));
-
             // 插入事实
             kieSession.insert(order);
             kieSession.insert(clock);
-
             // 执行规则
             kieSession.fireAllRules();
 

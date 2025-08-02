@@ -14,4 +14,5 @@ public class Order {
     private String customerType; // VIP/NORMAL
     private BigDecimal amount;
     private BigDecimal discount = BigDecimal.ZERO;
+    private Long userId;
 }

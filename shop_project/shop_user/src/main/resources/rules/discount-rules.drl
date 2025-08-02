@@ -3,7 +3,12 @@ package rules
 import com.example.shop_user.dto.Order
 import com.example.shop_user.dto.RuleResult
 import java.math.BigDecimal
+import com.example.shop_user.service.UserService;
+import com.example.shop_user.entity.User;
+
+
 global org.slf4j.Logger logger
+global UserService userService;
 
 rule "VIP"
     when
@@ -28,6 +33,15 @@ end
 rule "Normal"
     when
         $order: Order(customerType == "NORMAL", amount > 500)
+    then
+        $order.setDiscount(new BigDecimal("0.05"));
+        insert(new RuleResult("Normal", new BigDecimal("0.05")));
+end
+
+rule "Normal"
+    when
+        $order: Order(customerType == "NORMAL", amount > 500)
+        $user:User(this == userService.get($order.userId)) from userService.get($order.userId)
     then
         $order.setDiscount(new BigDecimal("0.05"));
         insert(new RuleResult("Normal", new BigDecimal("0.05")));

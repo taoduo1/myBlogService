@@ -1,5 +1,6 @@
 package com.example.shop_common.entity.es;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -18,22 +19,26 @@ public class ArticleEntity {
     /**
      * 主键
      */
+    @ApiModelProperty(value = "id")
     @Id
     private String id;
 
     /**
      * 标题
      */
+    @ApiModelProperty(value = "标题")
     private String title;
 
     /**
      * 内容
      */
+    @ApiModelProperty(value = "内容")
     private String content;
 
     /**
      * 用户id
      */
+    @ApiModelProperty(value = "用户id")
     private Integer userId;
 
     /**
