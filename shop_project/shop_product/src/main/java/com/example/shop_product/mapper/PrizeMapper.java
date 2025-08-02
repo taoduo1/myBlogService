@@ -1,7 +1,7 @@
 package com.example.shop_product.mapper;
 
-import com.example.shop_product.entity.Prize;
 import com.example.shop_common.common.mybatis.ExtBaseMapper;
+import com.example.shop_product.entity.Prize;
 
 /**
  * <p>

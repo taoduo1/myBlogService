@@ -2,7 +2,6 @@ package com.example.shop_user.service.impl;
 
 import com.example.shop_user.dto.Order;
 import com.example.shop_user.dto.RuleResult;
-import com.example.shop_user.entity.User;
 import com.example.shop_user.service.DiscountRuleService;
 import com.example.shop_user.service.UserService;
 import org.kie.api.KieServices;

@@ -1,7 +1,7 @@
 package com.example.shop_user.service;
 
-import com.example.shop_user.entity.TenantConfig;
 import com.example.shop_common.common.service.CrudService;
+import com.example.shop_user.entity.TenantConfig;
 
 /**
  * <p>

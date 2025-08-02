@@ -1,7 +1,7 @@
 package com.example.shop_user.mapper;
 
-import com.example.shop_user.entity.TenantConfig;
 import com.example.shop_common.common.mybatis.ExtBaseMapper;
+import com.example.shop_user.entity.TenantConfig;
 
 /**
  * <p>

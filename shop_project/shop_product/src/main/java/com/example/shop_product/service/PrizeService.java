@@ -1,7 +1,7 @@
 package com.example.shop_product.service;
 
-import com.example.shop_product.entity.Prize;
 import com.example.shop_common.common.service.CrudService;
+import com.example.shop_product.entity.Prize;
 import com.example.shop_product.entity.dto.PrizeDto;
 
 /**
